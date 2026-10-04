@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Law Synth Calculator - Immortality Incremental Wiki</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #090a0f;
+            --bg-secondary: #10121a;
+            --card-bg: #141722;
+            --card-bg-hover: #1b1f2e;
+            --card-border: rgba(255, 255, 255, 0.08);
+            
+            /* Dynamic Accent Color Theme */
+            --accent: #06b6d4;               /* Electric Cyan */
+            --accent-rgb: 6, 182, 212;
+            --accent-glow: rgba(var(--accent-rgb), 0.25);
+            --accent-hover: #0891b2;
+            
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            
+            --radius-xl: 16px;
+            --radius-lg: 10px;
+            --radius-md: 6px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 50% 0%, rgba(var(--accent-rgb), 0.12) 0%, transparent 60%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 960px;
+        }
+
+        /* Header Navigation / Banner */
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            border-radius: 20px;
+            background: rgba(var(--accent-rgb), 0.1);
+            border: 1px solid rgba(var(--accent-rgb), 0.3);
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* Navigation Switcher Bar */
+        .nav-switcher {
+            display: flex;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-xl);
+            padding: 6px;
+            gap: 6px;
+            margin-bottom: 28px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            font-weight: 700;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .nav-btn.active {
+            background: rgba(var(--accent-rgb), 0.18);
+            border: 1px solid rgba(var(--accent-rgb), 0.35);
+            color: #fff;
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+
+        /* Tool Content Box Template */
+        .tool-container {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            min-height: 300px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Inline Calculator Settings Control Panel */
+        .settings-panel {
+            background: var(--bg-secondary);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 16px 20px;
+            margin-bottom: 24px;
+        }
+
+        .settings-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .settings-summary h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mult-badge {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent);
+            background: rgba(var(--accent-rgb), 0.12);
+            border: 1px solid rgba(var(--accent-rgb), 0.3);
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--card-border);
+        }
+
+        .setting-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
+            transition: border-color 0.2s;
+        }
+
+        .setting-checkbox:hover {
+            border-color: rgba(var(--accent-rgb), 0.4);
+        }
+
+        .setting-checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        /* Vertical Top-to-Bottom Stack Layout */
+        .laws-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .law-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            transition: border-color 0.2s ease;
+        }
+
+        .law-card:hover {
+            border-color: rgba(var(--accent-rgb), 0.4);
+        }
+
+        .law-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .law-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #fff;
+            min-width: 180px;
+        }
+
+        .inputs-row {
+            display: flex;
+            gap: 16px;
+            flex: 1;
+            justify-content: flex-end;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 160px;
+        }
+
+        .input-group label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .input-group input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-glow);
+        }
+
+        .law-result {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .law-result .res-value {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        @media (max-width: 650px) {
+            .nav-switcher {
+                flex-direction: column;
+            }
+
+            .law-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 14px;
+            }
+
+            .inputs-row {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .input-group {
+                width: 48%;
+            }
+
+            .law-result {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        
+        <!-- Header -->
+        <header class="header">
+            <div class="brand-badge">Interactive Tool</div>
+            <h1>Law Synthesis Calculator</h1>
+            <p>Calculate law synthesis materials, beast cores, and estimated farming times.</p>
+        </header>
+
+        <!-- Navigation Switcher Bar -->
+        <nav class="nav-switcher">
+            <a href="index.html" class="nav-btn">
+                <span>📚</span> Wiki
+            </a>
+            <a href="law_synth.html" class="nav-btn active">
+                <span>⚖️</span> Law Synthesis Calculator
+            </a>
+            <a href="mark_calc.html" class="nav-btn">
+                <span>🔮</span> Mark Calculator
+            </a>
+        </nav>
+
+        <!-- Main Tool Container -->
+        <div class="tool-container">
+            
+            <!-- Inline Material Multipliers Settings -->
+            <details class="settings-panel" open>
+                <summary class="settings-summary">
+                    <h3>⚙️ Multiplier Settings</h3>
+                    <span class="mult-badge" id="multiplier-total">Total Speed: 1x (Time /1)</span>
+                </summary>
+                <div class="settings-grid">
+                    <label class="setting-checkbox">
+                        <input type="checkbox" id="set-reinc" onchange="updateSettings()">
+                        <span>First Reincarnation (x2)</span>
+                    </label>
+                    <label class="setting-checkbox">
+                        <input type="checkbox" id="set-mark" onchange="updateSettings()">
+                        <span>Mark of Ash Secret Maxed (x2)</span>
+                    </label>
+                    <label class="setting-checkbox">
+                        <input type="checkbox" id="set-beast" onchange="updateSettings()">
+                        <span>Beast Stage 300 (x2)</span>
+                    </label>
+                    <label class="setting-checkbox">
+                        <input type="checkbox" id="set-w5" onchange="updateSettings()">
+                        <span>World 5 Secret Upgrade (x2)</span>
+                    </label>
+                    <label class="setting-checkbox">
+                        <input type="checkbox" id="set-divinity" onchange="updateSettings()">
+                        <span>Divinity Board 3 (x2)</span>
+                    </label>
+                </div>
+            </details>
+
+            <div class="laws-stack">
+                
+                <!-- Law of Perception -->
+                <div class="law-card" id="card-perception">
+                    <div class="law-header">
+                        <div class="law-title">Law of Perception</div>
+                        <div class="inputs-row">
+                            <div class="input-group">
+                                <label for="perception-current">Current Level</label>
+                                <input type="number" id="perception-current" min="0" max="10" value="0" placeholder="0" oninput="handleInput(this, 'perception')">
+                            </div>
+                            <div class="input-group">
+                                <label for="perception-target">Target Level</label>
+                                <input type="number" id="perception-target" min="0" max="10" value="0" placeholder="0" oninput="handleInput(this, 'perception')">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="law-result" id="res-perception">Awaiting data...</div>
+                </div>
+
+                <!-- Law of Illusion -->
+                <div class="law-card" id="card-illusion">
+                    <div class="law-header">
+                        <div class="law-title">Law of Illusion</div>
+                        <div class="inputs-row">
+                            <div class="input-group">
+                                <label for="illusion-current">Current Level</label>
+                                <input type="number" id="illusion-current" min="0" max="10" value="0" placeholder="0" oninput="handleInput(this, 'illusion')">
+                            </div>
+                            <div class="input-group">
+                                <label for="illusion-target">Target Level</label>
+                                <input type="number" id="illusion-target" min="0" max="10" value="0" placeholder="0" oninput="handleInput(this, 'illusion')">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="law-result" id="res-illusion">Awaiting data...</div>
+                </div>
+
+                <!-- Law of Anima -->
+                <div class="law-card" id="card-anima">
+                    <div class="law-header">
+                        <div class="law-title">Law of Anima</div>
+                        <div class="inputs-row">
+                            <div class="input-group">
+                                <label for="anima-current">Current Level</label>
+                                <input type="number" id="anima-current" min="0" max="10" value="0" placeholder="0" oninput="handleInput(this, 'anima')">
+                            </div>
+                            <div class="input-group">
+                                <label for="anima-target">Target Level</label>
+                                <input type="number" id="anima-target" min="0" max="10" value="0" placeholder="0" oninput="handleInput(this, 'anima')">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="law-result" id="res-anima">Awaiting data...</div>
+                </div>
+
+                <!-- Law of Alacrity -->
+                <div class="law-card" id="card-alacrity">
+                    <div class="law-header">
+                        <div class="law-title">Law of Alacrity</div>
+                        <div class="inputs-row">
+                            <div class="input-group">
+                                <label for="alacrity-current">Current Level</label>
+                                <input type="number" id="alacrity-current" min="0" max="10" value="0" placeholder="0" oninput="handleInput(this, 'alacrity')">
+                            </div>
+                            <div class="input-group">
+                                <label for="alacrity-target">Target Level</label>
+                                <input type="number" id="alacrity-target" min="0" max="10" value="0" placeholder="0" oninput="handleInput(this, 'alacrity')">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="law-result" id="res-alacrity">Awaiting data...</div>
+                </div>
+
+                <!-- Law of Strength -->
+                <div class="law-card" id="card-strength">
+                    <div class="law-header">
+                        <div class="law-title">Law of Strength</div>
+                        <div class="inputs-row">
+                            <div class="input-group">
+                                <label for="strength-current">Current Level</label>
+                                <input type="number" id="strength-current" min="0" max="10" value="0" placeholder="0" oninput="handleInput(this, 'strength')">
+                            </div>
+                            <div class="input-group">
+                                <label for="strength-target">Target Level</label>
+                                <input type="number" id="strength-target" min="0" max="10" value="0" placeholder="0" oninput="handleInput(this, 'strength')">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="law-result" id="res-strength">Awaiting data...</div>
+                </div>
+
+                <!-- Law of Darkness -->
+                <div class="law-card" id="card-darkness">
+                    <div class="law-header">
+                        <div class="law-title">Law of Darkness</div>
+                        <div class="inputs-row">
+                            <div class="input-group">
+                                <label for="darkness-current">Current Level</label>
+                                <input type="number" id="darkness-current" min="0" max="10" value="0" placeholder="0" oninput="handleInput(this, 'darkness')">
+                            </div>
+                            <div class="input-group">
+                                <label for="darkness-target">Target Level</label>
+                                <input type="number" id="darkness-target" min="0" max="10" value="0" placeholder="0" oninput="handleInput(this, 'darkness')">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="law-result" id="res-darkness">Awaiting data...</div>
+                </div>
+
+                <!-- Law of Time -->
+                <div class="law-card" id="card-time">
+                    <div class="law-header">
+                        <div class="law-title">Law of Time</div>
+                        <div class="inputs-row">
+                            <div class="input-group">
+                                <label for="time-current">Current Level</label>
+                                <input type="number" id="time-current" min="0" max="10" value="0" placeholder="0" oninput="handleInput(this, 'time')">
+                            </div>
+                            <div class="input-group">
+                                <label for="time-target">Target Level</label>
+                                <input type="number" id="time-target" min="0" max="10" value="0" placeholder="0" oninput="handleInput(this, 'time')">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="law-result" id="res-time">Awaiting data...</div>
+                </div>
+
+                <!-- Law of Life -->
+                <div class="law-card" id="card-life">
+                    <div class="law-header">
+                        <div class="law-title">Law of Life</div>
+                        <div class="inputs-row">
+                            <div class="input-group">
+                                <label for="life-current">Current Level</label>
+                                <input type="number" id="life-current" min="0" max="10" value="0" placeholder="0" oninput="handleInput(this, 'life')">
+                            </div>
+                            <div class="input-group">
+                                <label for="life-target">Target Level</label>
+                                <input type="number" id="life-target" min="0" max="10" value="0" placeholder="0" oninput="handleInput(this, 'life')">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="law-result" id="res-life">Awaiting data...</div>
+                </div>
+
+                <!-- Law of Death -->
+                <div class="law-card" id="card-death">
+                    <div class="law-header">
+                        <div class="law-title">Law of Death</div>
+                        <div class="inputs-row">
+                            <div class="input-group">
+                                <label for="death-current">Current Level</label>
+                                <input type="number" id="death-current" min="0" max="10" value="0" placeholder="0" oninput="handleInput(this, 'death')">
+                            </div>
+                            <div class="input-group">
+                                <label for="death-target">Target Level</label>
+                                <input type="number" id="death-target" min="0" max="10" value="0" placeholder="0" oninput="handleInput(this, 'death')">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="law-result" id="res-death">Awaiting data...</div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Material drop rates and estimated time per individual drop (in seconds base)
+        const materialRates = {
+            Lucent:  { chance: 0.0350, timePerDrop: 29 },
+            Ichor:   { chance: 0.0310, timePerDrop: 32 },
+            Cindral: { chance: 0.0270, timePerDrop: 37 },
+            Kismet:  { chance: 0.0235, timePerDrop: 43 },
+            Aster:   { chance: 0.0205, timePerDrop: 49 },
+            Aeon:    { chance: 0.0180, timePerDrop: 56 },
+            Solace:  { chance: 0.0155, timePerDrop: 65 },
+            Morrow:  { chance: 0.0135, timePerDrop: 74 },
+            Sable:   { chance: 0.0115, timePerDrop: 87 },
+            Axiom:   { chance: 0.0100, timePerDrop: 100 },
+            Grace:   { chance: 0.0085, timePerDrop: 118 }
+        };
+
+        const lawDatabase = {
+            anima: [
+                { materials: { Cindral: 5 }, cores: 25000 },
+                { materials: { Cindral: 10 }, cores: 50000 },
+                { materials: { Cindral: 15 }, cores: 75000 },
+                { materials: { Cindral: 20 }, cores: 100000 },
+                { materials: { Cindral: 25 }, cores: 125000 },
+                { materials: { Cindral: 30 }, cores: 150000 },
+                { materials: { Cindral: 35 }, cores: 175000 },
+                { materials: { Cindral: 40 }, cores: 200000 },
+                { materials: { Cindral: 45 }, cores: 225000 },
+                { materials: { Cindral: 50 }, cores: 250000 }
+            ],
+            perception: [
+                { materials: { Lucent: 5 }, cores: 25000 },
+                { materials: { Lucent: 10 }, cores: 50000 },
+                { materials: { Lucent: 15 }, cores: 75000 },
+                { materials: { Lucent: 20 }, cores: 100000 },
+                { materials: { Lucent: 25 }, cores: 125000 },
+                { materials: { Lucent: 30 }, cores: 150000 },
+                { materials: { Lucent: 35 }, cores: 175000 },
+                { materials: { Lucent: 40 }, cores: 200000 },
+                { materials: { Lucent: 45 }, cores: 225000 },
+                { materials: { Lucent: 50 }, cores: 250000 }
+            ],
+            illusion: [
+                { materials: { Ichor: 5 }, cores: 25000 },
+                { materials: { Ichor: 10 }, cores: 50000 },
+                { materials: { Ichor: 15 }, cores: 75000 },
+                { materials: { Ichor: 20 }, cores: 100000 },
+                { materials: { Ichor: 25 }, cores: 125000 },
+                { materials: { Ichor: 30 }, cores: 150000 },
+                { materials: { Ichor: 35 }, cores: 175000 },
+                { materials: { Ichor: 40 }, cores: 200000 },
+                { materials: { Ichor: 45 }, cores: 225000 },
+                { materials: { Ichor: 50 }, cores: 250000 }
+            ],
+            strength: [
+                { materials: { Aster: 10, Sable: 10 }, cores: 50000 },
+                { materials: { Aster: 20, Sable: 20 }, cores: 100000 },
+                { materials: { Aster: 30, Sable: 30 }, cores: 150000 },
+                { materials: { Aster: 40, Sable: 40 }, cores: 200000 },
+                { materials: { Aster: 50, Sable: 50 }, cores: 250000 },
+                { materials: { Aster: 60, Sable: 60 }, cores: 300000 },
+                { materials: { Aster: 70, Sable: 70 }, cores: 350000 },
+                { materials: { Aster: 80, Sable: 80 }, cores: 400000 },
+                { materials: { Aster: 90, Sable: 90 }, cores: 450000 },
+                { materials: { Aster: 100, Sable: 100 }, cores: 500000 }
+            ],
+            alacrity: [
+                { materials: { Kismet: 10, Morrow: 10 }, cores: 50000 },
+                { materials: { Kismet: 20, Morrow: 20 }, cores: 100000 },
+                { materials: { Kismet: 30, Morrow: 30 }, cores: 150000 },
+                { materials: { Kismet: 40, Morrow: 40 }, cores: 200000 },
+                { materials: { Kismet: 50, Morrow: 50 }, cores: 250000 },
+                { materials: { Kismet: 60, Morrow: 60 }, cores: 300000 },
+                { materials: { Kismet: 70, Morrow: 70 }, cores: 350000 },
+                { materials: { Kismet: 80, Morrow: 80 }, cores: 400000 },
+                { materials: { Kismet: 90, Morrow: 90 }, cores: 450000 },
+                { materials: { Kismet: 100, Morrow: 100 }, cores: 500000 }
+            ],
+            darkness: [
+                { materials: { Aeon: 10, Axiom: 10 }, cores: 50000 },
+                { materials: { Aeon: 20, Axiom: 20 }, cores: 100000 },
+                { materials: { Aeon: 30, Axiom: 30 }, cores: 150000 },
+                { materials: { Aeon: 40, Axiom: 40 }, cores: 200000 },
+                { materials: { Aeon: 50, Axiom: 50 }, cores: 250000 },
+                { materials: { Aeon: 60, Axiom: 60 }, cores: 300000 },
+                { materials: { Aeon: 70, Axiom: 70 }, cores: 350000 },
+                { materials: { Aeon: 80, Axiom: 80 }, cores: 400000 },
+                { materials: { Aeon: 90, Axiom: 90 }, cores: 450000 },
+                { materials: { Aeon: 100, Axiom: 100 }, cores: 500000 }
+            ],
+            life: [
+                { materials: { Cindral: 15, Morrow: 15 }, cores: 100000 },
+                { materials: { Cindral: 30, Morrow: 30 }, cores: 200000 },
+                { materials: { Cindral: 45, Morrow: 45 }, cores: 300000 },
+                { materials: { Cindral: 60, Morrow: 60 }, cores: 400000 },
+                { materials: { Cindral: 75, Morrow: 75 }, cores: 500000 },
+                { materials: { Cindral: 90, Morrow: 90 }, cores: 600000 },
+                { materials: { Cindral: 105, Morrow: 105 }, cores: 700000 },
+                { materials: { Cindral: 120, Morrow: 120 }, cores: 800000 },
+                { materials: { Cindral: 135, Morrow: 135 }, cores: 900000 },
+                { materials: { Cindral: 150, Morrow: 150 }, cores: 1000000 }
+            ],
+            death: [
+                { materials: { Grace: 15, Axiom: 15 }, cores: 100000 },
+                { materials: { Grace: 30, Axiom: 30 }, cores: 200000 },
+                { materials: { Grace: 45, Axiom: 45 }, cores: 300000 },
+                { materials: { Grace: 60, Axiom: 60 }, cores: 400000 },
+                { materials: { Grace: 75, Axiom: 75 }, cores: 500000 },
+                { materials: { Grace: 90, Axiom: 90 }, cores: 600000 },
+                { materials: { Grace: 105, Axiom: 105 }, cores: 700000 },
+                { materials: { Grace: 120, Axiom: 120 }, cores: 800000 },
+                { materials: { Grace: 135, Axiom: 135 }, cores: 900000 },
+                { materials: { Grace: 150, Axiom: 150 }, cores: 1000000 }
+            ],
+            time: [
+                { materials: { Solace: 15, Grace: 15 }, cores: 100000 },
+                { materials: { Solace: 30, Grace: 30 }, cores: 200000 },
+                { materials: { Solace: 45, Grace: 45 }, cores: 300000 },
+                { materials: { Solace: 60, Grace: 60 }, cores: 400000 },
+                { materials: { Solace: 75, Grace: 75 }, cores: 500000 },
+                { materials: { Solace: 90, Grace: 90 }, cores: 600000 },
+                { materials: { Solace: 105, Grace: 105 }, cores: 700000 },
+                { materials: { Solace: 120, Grace: 120 }, cores: 800000 },
+                { materials: { Solace: 135, Grace: 135 }, cores: 900000 },
+                { materials: { Solace: 150, Grace: 150 }, cores: 1000000 }
+            ]
+        };
+
+        let currentMultiplier = 1;
+
+        function updateSettings() {
+            let mult = 1;
+            if (document.getElementById('set-reinc').checked) mult *= 2;
+            if (document.getElementById('set-mark').checked) mult *= 2;
+            if (document.getElementById('set-beast').checked) mult *= 2;
+            if (document.getElementById('set-w5').checked) mult *= 2;
+            if (document.getElementById('set-divinity').checked) mult *= 2;
+
+            currentMultiplier = mult;
+            document.getElementById('multiplier-total').innerText = `Total Speed: ${mult}x (Time /${mult})`;
+
+            // Recalculate all cards with updated multiplier
+            Object.keys(lawDatabase).forEach(lawKey => calculateLaw(lawKey));
+        }
+
+        function formatTime(totalSeconds) {
+            if (totalSeconds <= 0) return "0s";
+            
+            const days = Math.floor(totalSeconds / 86400);
+            const hours = Math.floor((totalSeconds % 86400) / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = Math.round(totalSeconds % 60);
+
+            const parts = [];
+            if (days > 0) parts.push(`${days}d`);
+            if (hours > 0) parts.push(`${hours}h`);
+            if (minutes > 0) parts.push(`${minutes}m`);
+            if (seconds > 0 || parts.length === 0) parts.push(`${seconds}s`);
+
+            return parts.join(" ");
+        }
+
+        function validateLevel(input) {
+            if (input.value === "") return 0;
+            let val = parseInt(input.value, 10);
+            if (isNaN(val) || val < 0) val = 0;
+            if (val > 10) val = 10;
+            input.value = val;
+            return val;
+        }
+
+        function calculateLaw(lawKey) {
+            const currInput = document.getElementById(`${lawKey}-current`);
+            const targetInput = document.getElementById(`${lawKey}-target`);
+            const resContainer = document.getElementById(`res-${lawKey}`);
+
+            if (!currInput || !targetInput || !resContainer) return;
+
+            let curr = parseInt(currInput.value, 10) || 0;
+            let target = parseInt(targetInput.value, 10) || 0;
+
+            if (!lawDatabase[lawKey]) {
+                resContainer.innerHTML = `<span>Required: <span class="res-value">Data pending...</span></span>`;
+                return;
+            }
+
+            if (curr >= target) {
+                resContainer.innerHTML = `
+                    <span>Materials: <span class="res-value">None</span></span>
+                    <span>Cores: <span class="res-value">0</span></span>
+                    <span>Est. Time (without cores): <span class="res-value">0s</span></span>
+                `;
+                return;
+            }
+
+            let totalCores = 0;
+            let totalMaterials = {};
+            let baseSeconds = 0;
+
+            const steps = lawDatabase[lawKey];
+            for (let i = curr; i < target && i < steps.length; i++) {
+                const step = steps[i];
+                totalCores += step.cores;
+                for (const [mat, amount] of Object.entries(step.materials)) {
+                    totalMaterials[mat] = (totalMaterials[mat] || 0) + amount;
+                    if (materialRates[mat]) {
+                        baseSeconds += amount * materialRates[mat].timePerDrop;
+                    }
+                }
+            }
+
+            const adjustedSeconds = baseSeconds / currentMultiplier;
+
+            const matString = Object.entries(totalMaterials)
+                .map(([mat, amt]) => `${amt.toLocaleString()} ${mat}`)
+                .join(", ");
+
+            resContainer.innerHTML = `
+                <span>Materials: <span class="res-value">${matString}</span></span>
+                <span>Cores: <span class="res-value">${totalCores.toLocaleString()}</span></span>
+                <span>Est. Time (without cores): <span class="res-value">~${formatTime(adjustedSeconds)}</span></span>
+            `;
+        }
+
+        function handleInput(input, lawKey) {
+            validateLevel(input);
+            calculateLaw(lawKey);
+        }
+
+        // Initialize calculations on page load
+        document.addEventListener("DOMContentLoaded", () => {
+            Object.keys(lawDatabase).forEach(lawKey => calculateLaw(lawKey));
+        });
+    </script>
+</body>
+</html>

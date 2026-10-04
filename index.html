@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Immortality Incremental Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #090a0f;
+            --bg-secondary: #10121a;
+            --card-bg: #141722;
+            --card-bg-hover: #1b1f2e;
+            --card-border: rgba(255, 255, 255, 0.08);
+            
+            /* Dynamic Accent Color Theme */
+            --accent: #06b6d4;               /* Electric Cyan */
+            --accent-rgb: 6, 182, 212;
+            --accent-glow: rgba(var(--accent-rgb), 0.25);
+            --accent-hover: #0891b2;
+            
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            
+            --radius-xl: 16px;
+            --radius-lg: 10px;
+            --radius-md: 6px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 50% 0%, rgba(var(--accent-rgb), 0.12) 0%, transparent 60%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 960px;
+        }
+
+        /* Header Navigation / Banner */
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            border-radius: 20px;
+            background: rgba(var(--accent-rgb), 0.1);
+            border: 1px solid rgba(var(--accent-rgb), 0.3);
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* Navigation Switcher Bar */
+        .nav-switcher {
+            display: flex;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-xl);
+            padding: 6px;
+            gap: 6px;
+            margin-bottom: 28px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            font-weight: 700;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .nav-btn.active {
+            background: rgba(var(--accent-rgb), 0.18);
+            border: 1px solid rgba(var(--accent-rgb), 0.35);
+            color: #fff;
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            margin-bottom: 28px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 48px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            color: #fff;
+            font-size: 0.98rem;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+            font-size: 1rem;
+        }
+
+        /* Quick Tools Grid */
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .tool-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-xl);
+            padding: 18px 20px;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: transform 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+            will-change: transform;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+            background: var(--card-bg-hover);
+        }
+
+        .tool-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: var(--radius-lg);
+            background: rgba(var(--accent-rgb), 0.12);
+            border: 1px solid rgba(var(--accent-rgb), 0.25);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .tool-info h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .tool-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.3;
+        }
+
+        /* Accordion Structure */
+        .section-group {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .acc-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            transition: border-color 0.2s ease;
+        }
+
+        .acc-card:hover {
+            border-color: rgba(var(--accent-rgb), 0.4);
+        }
+
+        .acc-btn {
+            width: 100%;
+            padding: 18px 22px;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: left;
+        }
+
+        .acc-btn:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .acc-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge-count {
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background: rgba(var(--accent-rgb), 0.15);
+            color: var(--accent);
+            border: 1px solid rgba(var(--accent-rgb), 0.25);
+            font-weight: 600;
+        }
+
+        .acc-arrow {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+        }
+
+        .acc-btn.active .acc-arrow {
+            transform: rotate(180deg);
+            background: var(--accent);
+            color: #000;
+        }
+
+        .acc-body {
+            display: none;
+            padding: 4px 22px 20px 22px;
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .acc-body.active {
+            display: block;
+        }
+
+        /* Sub Links Grid */
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .item-link {
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+        }
+
+        .item-link:hover {
+            background: rgba(var(--accent-rgb), 0.12);
+            border-color: rgba(var(--accent-rgb), 0.4);
+            color: #fff;
+        }
+
+        /* Nested Accordions */
+        .nested-acc {
+            margin-top: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            background: rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .nested-btn {
+            width: 100%;
+            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            color: var(--accent);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nested-btn:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .nested-body {
+            display: none;
+            padding: 0 12px 12px 12px;
+        }
+
+        .nested-body.active {
+            display: block;
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 450px;
+            height: auto;
+            object-fit: contain;
+            border-radius: 6px;
+            border: 1px solid #374151;
+            }
+
+        @media (max-width: 600px) {
+            .nav-switcher {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        
+        <!-- Header -->
+        <header class="header">
+            <div class="brand-badge">Wiki</div>
+            <h1>Immortality Incremental Hub</h1>
+            <p>Explore guides and game info.</p>
+        </header>
+
+        <!-- Navigation Switcher Bar -->
+        <nav class="nav-switcher">
+            <a href="index.html" class="nav-btn active">
+                <span>📚</span> Wiki
+            </a>
+            <a href="law_synth.html" class="nav-btn">
+                <span>⚖️</span> Law Synthesis Calculator
+            </a>
+            <a href="mark_calc.html" class="nav-btn">
+                <span>🔮</span> Mark Calculator
+            </a>
+        </nav>
+
+        <!-- Live Filter Input -->
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" class="search-input" placeholder="Search pages, guides, currencies..." oninput="filterLinks()">
+        </div>
+
+        <!-- Featured / Quick Cards Grid -->
+        <div class="quick-grid">
+            <a href="article.html?page=links" class="tool-card">
+                <div class="tool-icon">🔥</div>
+                <div class="tool-info">
+                    <h3>Useful Links</h3>
+                    <p>Official resources.</p>
+                </div>
+            </a>
+            <a href="article.html?page=codes" class="tool-card">
+                <div class="tool-icon">🎁</div>
+                <div class="tool-info">
+                    <h3>Active Codes</h3>
+                    <p>All active game codes.</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Accordion Categories -->
+        <div class="section-group">
+
+            <!-- 1. GUIDES -->
+            <div class="acc-card">
+                <button class="acc-btn" onclick="toggleAcc(this)">
+                    <span class="acc-title">📖 Guides</span>
+                    <span class="acc-arrow">▼</span>
+                </button>
+                <div class="acc-body">
+
+                    
+                    
+<!-- World guides -->
+<div class="nested-acc">
+    <button class="nested-btn" onclick="toggleAcc(this)">
+        <span>World guides</span>
+        <span>▼</span>
+    </button>
+    <div class="nested-body">
+        <div class="link-grid">
+            <a href="article.html?page=world1_guide" class="item-link">World 1</a>
+            <a href="article.html?page=world2_guide" class="item-link">World 2</a>
+            <a href="article.html?page=world3_guide" class="item-link">World 3</a>
+            <a href="article.html?page=world4_guide" class="item-link">World 4</a>
+            <a href="article.html?page=world5_guide" class="item-link">World 5</a>
+            <a href="article.html?page=world6_guide" class="item-link">World 6</a>
+            <a href="article.html?page=world7_guide" class="item-link">World 7</a>
+            <a href="article.html?page=world8_guide" class="item-link">World 8</a>
+        </div>
+    </div>
+</div>
+                    <!-- Challenges guides -->
+                    <div class="nested-acc">
+                        <button class="nested-btn" onclick="toggleAcc(this)">
+                            <span>Challenges guides</span>
+                            <span>▼</span>
+                        </button>
+                        <div class="nested-body">
+                            <div class="link-grid">
+                                <a href="article.html?page=challenge1_guide" class="item-link">Challenge 1</a>
+                                <a href="article.html?page=challenge_origin_guide" class="item-link">Origin Challenge</a>
+                                <a href="article.html?page=challenge_daoreturn_guide" class="item-link">Dao Return Challenge</a>
+                                <a href="article.html?page=challenges_origin_w7_guide" class="item-link">Origin Challenges(world 7)</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Other useful guides -->
+                    <div class="nested-acc">
+                        <button class="nested-btn" onclick="toggleAcc(this)">
+                            <span>Other useful guides</span>
+                            <span>▼</span>
+                        </button>
+                        <div class="nested-body">
+                            <div class="link-grid">
+                                <a href="article.html?page=dungeons_guide" class="item-link">Dungeons Guide</a>
+                                <a href="article.html?page=law_synth_guide" class="item-link">Law Synthesis Guide</a>
+                                <a href="article.html?page=constellation_requirements_guide" class="item-link">Constellations requiremnts(world 7)</a>
+                            </div> 
+                        </div>
+                    </div>
+
+                    <!-- Mark related -->
+                    <div class="nested-acc">
+                        <button class="nested-btn" onclick="toggleAcc(this)">
+                            <span>Mark related</span>
+                            <span>▼</span>
+                        </button>
+                        <div class="nested-body">
+                            <div class="link-grid">
+                                <a href="article.html?page=secret_marks_guide" class="item-link">All Secret Marks</a>
+                                <a href="article.html?page=all_marks_stats_guide" class="item-link">All Marks Stats</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Upgrade trees -->
+                    <div class="nested-acc">
+                        <button class="nested-btn" onclick="toggleAcc(this)">
+                            <span>Upgrade trees</span>
+                            <span>▼</span>
+                        </button>
+                        <div class="nested-body">
+                            <div class="link-grid">
+                                <a href="article.html?page=ash_tree" class="item-link"> Ash tree</a>
+                                <a href="article.html?page=flora_tree" class="item-link"> Flora tree</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Collectables and rng -->
+                    <div class="nested-acc">
+                        <button class="nested-btn" onclick="toggleAcc(this)">
+                            <span>Collectables and rng</span>
+                            <span>▼</span>
+                        </button>
+                        <div class="nested-body">
+                            <div class="link-grid">
+                                <a href="article.html?page=secret_upgrades_guide" class="item-link">All Secret Upgrades</a>
+                                <a href="article.html?page=bloodlines_stats_guide" class="item-link">All Bloodlines Stats</a>
+                                <a href="article.html?page=scriptures_guide" class="item-link">All Scriptures</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Misc -->
+                    <div class="nested-acc">
+                        <button class="nested-btn" onclick="toggleAcc(this)">
+                            <span>Misc</span>
+                            <span>▼</span>
+                        </button>
+                        <div class="nested-body">
+                            <div class="link-grid">
+                                <a href="article.html?page=suffixes_guide" class="item-link">Game Suffixes</a>
+                                <a href="article.html?page=gamepass_tierlist" class="item-link">Gamepass Tier List</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- 2. CURRENCY -->
+            <div class="acc-card">
+                <button class="acc-btn" onclick="toggleAcc(this)">
+                    <span class="acc-title">💰 Currency</span>
+                    <span class="acc-arrow">▼</span>
+                </button>
+                <div class="acc-body">
+                    <div class="link-grid">
+                        <a href="article.html?page=qi" class="item-link">Qi</a>
+                        <a href="article.html?page=insight" class="item-link">Insight</a>
+                        <a href="article.html?page=essence" class="item-link">Essence</a>
+                        <a href="article.html?page=spiritstones" class="item-link">Spiritstones</a>
+                        <a href="article.html?page=soulfire" class="item-link">Soulfire</a>
+                        <a href="article.html?page=karma" class="item-link">Karma</a>
+                        <a href="article.html?page=stars" class="item-link">Stars</a>
+                        <a href="article.html?page=nebulae" class="item-link">Nebulae</a>
+                        <a href="article.html?page=quasar" class="item-link">Quasar</a>
+                        <a href="article.html?page=miasma" class="item-link">Miasma</a>
+                        <a href="article.html?page=ash" class="item-link">Ash</a>
+                        <a href="article.html?page=law" class="item-link">Law</a>
+                        <a href="article.html?page=citizens" class="item-link">Citizens</a>
+                        <a href="article.html?page=faith" class="item-link">Faith</a>
+                        <a href="article.html?page=divinity" class="item-link">Divinity</a>
+                        <a href="article.html?page=vitality" class="item-link">Vitality</a>
+                        <a href="article.html?page=anima" class="item-link">Anima</a>
+                        <a href="article.html?page=flora" class="item-link">Flora</a>
+                        <a href="article.html?page=tian" class="item-link">Tian</a>
+                        <a href="article.html?page=souls" class="item-link">Souls</a>
+                        <a href="article.html?page=dao" class="item-link">Dao</a>
+                        <a href="article.html?page=strength" class="item-link">Strength</a>
+                        <a href="article.html?page=endurance" class="item-link">Endurance</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. MARKS -->
+            <div class="acc-card">
+                <button class="acc-btn" onclick="toggleAcc(this)">
+                    <span class="acc-title">🔮 Marks</span>
+                    <span class="acc-arrow">▼</span>
+                </button>
+                <div class="acc-body">
+                    
+                    <!-- Global Marks -->
+                    <div class="nested-acc">
+                        <button class="nested-btn" onclick="toggleAcc(this)">
+                            <span>Global Marks</span>
+                            <span>▼</span>
+                        </button>
+                        <div class="nested-body">
+                            <div class="link-grid">
+                                <a href="article.html?page=mark_of_unity" class="item-link">Mark of Unity</a>
+                                <a href="article.html?page=mark_of_confluence" class="item-link">Mark of Confluence</a>
+                                <a href="article.html?page=mark_of_ambivalence" class="item-link">Mark of Ambivalence</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Normal Marks -->
+                    <div class="nested-acc">
+                        <button class="nested-btn" onclick="toggleAcc(this)">
+                            <span>Normal Marks</span>
+                            <span>▼</span>
+                        </button>
+                        <div class="nested-body">
+                            <div class="link-grid">
+                                <a href="article.html?page=mark_of_insight" class="item-link">Mark of Insight</a>
+                                <a href="article.html?page=mark_of_essence" class="item-link">Mark of Essence</a>
+                                <a href="article.html?page=mark_of_soulfire" class="item-link">Mark of Soulfire</a>
+                                <a href="article.html?page=mark_of_karma" class="item-link">Mark of Karma</a>
+                                <a href="article.html?page=mark_of_stars" class="item-link">Mark of Stars</a>
+                                <a href="article.html?page=mark_of_nebulae" class="item-link">Mark of Nebulae</a>
+                                <a href="article.html?page=mark_of_quasar" class="item-link">Mark of Quasar</a>
+                                <a href="article.html?page=mark_of_miasma" class="item-link">Mark of Miasma</a>
+                                <a href="article.html?page=mark_of_ash" class="item-link">Mark of Ash</a>
+                                <a href="article.html?page=mark_of_law" class="item-link">Mark of Law</a>
+                                <a href="article.html?page=mark_of_faith" class="item-link">Mark of Faith</a>
+                                <a href="article.html?page=mark_of_divinity" class="item-link">Mark of Divinity</a>
+                                <a href="article.html?page=mark_of_vitality" class="item-link">Mark of Vitality</a>
+                                <a href="article.html?page=mark_of_anima" class="item-link">Mark of Anima</a>
+                                <a href="article.html?page=mark_of_flora" class="item-link">Mark of Flora</a>
+                                <a href="article.html?page=mark_of_tian" class="item-link">Mark of Tian</a>
+                                <a href="article.html?page=mark_of_souls" class="item-link">Mark of Souls</a>
+                                <a href="article.html?page=secret_marks" class="item-link">Secret Marks</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paths -->
+                    <div class="nested-acc">
+                        <button class="nested-btn" onclick="toggleAcc(this)">
+                            <span>Paths</span>
+                            <span>▼</span>
+                        </button>
+                        <div class="nested-body">
+                            <div class="link-grid">
+                                <a href="article.html?page=dao_path" class="item-link">Dao Path</a>
+                                 <a href="article.html?page=strength_path" class="item-link">Strength Path</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+           <!-- 4. WORLDS -->
+<div class="acc-card">
+    <button class="acc-btn" onclick="toggleAcc(this)">
+        <span class="acc-title">🌍 Worlds</span>
+        <span class="acc-arrow">▼</span>
+    </button>
+    <div class="acc-body">
+        
+        <!-- Dungeons -->
+        <div class="nested-acc">
+            <button class="nested-btn" onclick="toggleAcc(this)">
+                <span>Dungeons</span>
+                <span>▼</span>
+            </button>
+            <div class="nested-body">
+                <div class="link-grid">
+                    <a href="article.html?page=dungeons_overview" class="item-link">Overview</a>
+                    <a href="article.html?page=dungeons_gear" class="item-link">Gear</a>
+                    <a href="article.html?page=dungeons_classes" class="item-link">Classes</a>
+                    <a href="article.html?page=dungeons_tree" class="item-link">Upgrade Tree</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- World 1 -->
+        <div class="nested-acc">
+            <button class="nested-btn" onclick="toggleAcc(this)">
+                <span>World 1</span>
+                <span>▼</span>
+            </button>
+            <div class="nested-body">
+                <div class="link-grid">
+                    <a href="article.html?page=world1_time" class="item-link">Time Milestones</a>
+                    <a href="article.html?page=world1_mark_opener" class="item-link">Mark Opener Milestones</a>
+                    <a href="article.html?page=world1_temperings" class="item-link">Body Temperings</a>
+                    <a href="article.html?page=world1_bloodlines" class="item-link">Bloodlines</a>
+                    <a href="article.html?page=world1_karma" class="item-link">Karma milestones</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- World 2 -->
+        <div class="nested-acc">
+            <button class="nested-btn" onclick="toggleAcc(this)">
+                <span>World 2</span>
+                <span>▼</span>
+            </button>
+            <div class="nested-body">
+                <div class="link-grid">
+                    <a href="article.html?page=world2_beast" class="item-link">Beast Milestones</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- World 3 -->
+        <div class="nested-acc">
+            <button class="nested-btn" onclick="toggleAcc(this)">
+                <span>World 3</span>
+                <span>▼</span>
+            </button>
+            <div class="nested-body">
+                <div class="link-grid">
+                    <a href="article.html?page=world3_manuals" class="item-link">Manuals</a>
+                    <a href="article.html?page=world3_roots" class="item-link">Roots</a>
+                    <a href="article.html?page=world3_challenges" class="item-link">Challenges</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- World 4 -->
+        <div class="nested-acc">
+            <button class="nested-btn" onclick="toggleAcc(this)">
+                <span>World 4</span>
+                <span>▼</span>
+            </button>
+            <div class="nested-body">
+                <div class="link-grid">
+                    <a href="article.html?page=world4_law_synth" class="item-link">Law synthesis</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- World 5 -->
+        <div class="nested-acc">
+            <button class="nested-btn" onclick="toggleAcc(this)">
+                <span>World 5</span>
+                <span>▼</span>
+            </button>
+            <div class="nested-body">
+                <div class="link-grid">
+                    <a href="article.html?page=world5_nothing" class="item-link">No w5 stuff for now</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- World 6 -->
+        <div class="nested-acc">
+            <button class="nested-btn" onclick="toggleAcc(this)">
+                <span>World 6</span>
+                <span>▼</span>
+            </button>
+            <div class="nested-body">
+                <div class="link-grid">
+                    <a href="article.html?page=world6_relics" class="item-link">Relics</a>
+                    <a href="article.html?page=world6_floor_prestige" class="item-link">Floor Prestige</a>
+                    <a href="article.html?page=world6_angel" class="item-link">Angel Milestones</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- World 7 -->
+        <div class="nested-acc">
+            <button class="nested-btn" onclick="toggleAcc(this)">
+                <span>World 7</span>
+                <span>▼</span>
+            </button>
+            <div class="nested-body">
+                <div class="link-grid">
+                    <a href="article.html?page=world7_meridians" class="item-link">Meridians</a>
+                    <a href="article.html?page=world7_dao_boost" class="item-link">Dao World boosts</a>
+                    <a href="article.html?page=world7_origins" class="item-link">Origin challenges</a>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- World 8 -->
+        <div class="nested-acc">
+            <button class="nested-btn" onclick="toggleAcc(this)">
+                <span>World 8</span>
+                <span>▼</span>
+            </button>
+            <div class="nested-body">
+                <div class="link-grid">
+                    <a href="article.html?page=world8_arts" class="item-link">Arts</a>
+                    <a href="article.html?page=world8_arts_mastery" class="item-link">Arts Mastery</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+            <!-- 5. SECTS -->
+            <div class="acc-card">
+                <button class="acc-btn" onclick="toggleAcc(this)">
+                    <span class="acc-title">⛩️ Sects</span>
+                    <span class="acc-arrow">▼</span>
+                </button>
+                <div class="acc-body">
+                    <div class="link-grid">
+                        <a href="article.html?page=main_sect" class="item-link">Sect Main Menu</a>
+                        <a href="article.html?page=quests_sect" class="item-link">Quests Menu</a>
+                        <a href="article.html?page=upgrades_sect" class="item-link">Upgrades Menu</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        function toggleAcc(btn) {
+            btn.classList.toggle('active');
+            const target = btn.nextElementSibling;
+            target.classList.toggle('active');
+        }
+
+        function filterLinks() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.acc-card');
+            const toolCards = document.querySelectorAll('.tool-card');
+
+            // If input is empty, reset everything to initial state
+            if (query === '') {
+                // Reset tool cards
+                toolCards.forEach(card => card.style.display = 'flex');
+
+                // Reset all links
+                document.querySelectorAll('.item-link').forEach(link => link.style.display = 'flex');
+
+                // Reset and close nested accordions
+                document.querySelectorAll('.nested-acc').forEach(nested => {
+                    nested.style.display = 'block';
+                });
+                document.querySelectorAll('.nested-btn, .nested-body').forEach(el => el.classList.remove('active'));
+
+                // Reset and close top-level accordions
+                cards.forEach(card => card.style.display = 'block');
+                document.querySelectorAll('.acc-btn, .acc-body').forEach(el => el.classList.remove('active'));
+
+                return;
+            }
+
+            // Filter Tool Cards
+            toolCards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(query) ? 'flex' : 'none';
+            });
+
+            // Filter Accordion Sections
+            cards.forEach(card => {
+                let cardHasMatches = false;
+
+                // Handle nested accordions (e.g., inside Marks and Guides)
+                const nestedAccs = card.querySelectorAll('.nested-acc');
+                if (nestedAccs.length > 0) {
+                    nestedAccs.forEach(nested => {
+                        let nestedHasMatches = false;
+                        const links = nested.querySelectorAll('.item-link');
+
+                        links.forEach(link => {
+                            const match = link.textContent.toLowerCase().includes(query);
+                            link.style.display = match ? 'flex' : 'none';
+                            if (match) nestedHasMatches = true;
+                        });
+
+                        if (nestedHasMatches) {
+                            nested.style.display = 'block';
+                            nested.querySelector('.nested-btn').classList.add('active');
+                            nested.querySelector('.nested-body').classList.add('active');
+                            cardHasMatches = true;
+                        } else {
+                            nested.style.display = 'none';
+                            nested.querySelector('.nested-btn').classList.remove('active');
+                            nested.querySelector('.nested-body').classList.remove('active');
+                        }
+                    });
+                } else {
+                    // Standard single-level accordions
+                    const links = card.querySelectorAll('.item-link');
+                    links.forEach(link => {
+                        const match = link.textContent.toLowerCase().includes(query);
+                        link.style.display = match ? 'flex' : 'none';
+                        if (match) cardHasMatches = true;
+                    });
+                }
+
+                // Show/Hide outer card and expand if matches exist
+                if (cardHasMatches) {
+                    card.style.display = 'block';
+                    card.querySelector('.acc-btn').classList.add('active');
+                    card.querySelector('.acc-body').classList.add('active');
+                } else {
+                    card.style.display = 'none';
+                    card.querySelector('.acc-btn').classList.remove('active');
+                    card.querySelector('.acc-body').classList.remove('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

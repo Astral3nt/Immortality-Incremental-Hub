@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark Calculator - Immortality Incremental Wiki</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0d14;
+            --card-bg: #141826;
+            --card-border: rgba(255, 255, 255, 0.08);
+            --card-border-active: rgba(6, 182, 212, 0.4);
+            
+            --accent: #06b6d4;               /* Cyan */
+            --accent-rgb: 6, 182, 212;
+            --accent-glow: rgba(var(--accent-rgb), 0.25);
+            
+            --success: #10b981;              /* Emerald */
+            --success-rgb: 16, 185, 129;
+            --success-glow: rgba(var(--success-rgb), 0.25);
+            
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --text-dim: #6b7280;
+
+            --radius-xl: 20px;
+            --radius-lg: 12px;
+            --radius-md: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(var(--accent-rgb), 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(139, 92, 246, 0.06) 0%, transparent 40%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        /* --- Header --- */
+        .header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            border-radius: 30px;
+            background: rgba(var(--accent-rgb), 0.1);
+            border: 1px solid rgba(var(--accent-rgb), 0.3);
+            color: var(--accent);
+            font-size: 0.75rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* --- Navigation --- */
+        .nav-switcher {
+            display: flex;
+            background-color: #121624;
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-xl);
+            padding: 6px;
+            gap: 6px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.36);
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: color 0.15s ease, background-color 0.15s ease;
+        }
+
+        .nav-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-btn.active {
+            background: rgba(var(--accent-rgb), 0.18);
+            border: 1px solid rgba(var(--accent-rgb), 0.4);
+            color: #fff;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        /* --- Main Tool Panel --- */
+        .tool-panel {
+            background-color: #141826;
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            transform: translateZ(0); /* Enable hardware acceleration in Firefox */
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--card-border);
+        }
+
+        /* --- Input & Dropdown Grids --- */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .field-card {
+            background-color: rgba(10, 12, 18, 0.85);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .field-card:focus-within {
+            border-color: var(--card-border-active);
+            box-shadow: 0 0 16px var(--accent-glow);
+            background-color: rgba(10, 12, 18, 0.95);
+        }
+
+        .field-card label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Input & Select Custom Styling for Firefox */
+        .input-field, .select-field {
+            width: 100%;
+            padding: 10px 14px;
+            background-color: #0b0d14 !important;
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            color: #ffffff !important;
+            font-size: 0.95rem;
+            font-weight: 600;
+            outline: none;
+            transition: border-color 0.15s ease;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .select-field {
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%239ca3af%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E") !important;
+            background-repeat: no-repeat !important;
+            background-position: right 14px top 50% !important;
+            background-size: 10px auto !important;
+            padding-right: 32px;
+            cursor: pointer;
+        }
+
+        /* Force Dropdown Options Black in Firefox */
+        select option {
+            background-color: #0b0d14 !important;
+            color: #ffffff !important;
+            padding: 8px 12px;
+        }
+
+        .input-field:focus, .select-field:focus {
+            border-color: var(--accent);
+        }
+
+        .parsed-preview {
+            font-size: 0.78rem;
+            color: var(--accent);
+            min-height: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+        }
+
+        .parsed-preview.error {
+            color: #f87171;
+        }
+
+        /* --- Selected Tier Info Banner --- */
+        .details-box {
+            background-color: rgba(var(--accent-rgb), 0.08);
+            border: 1px solid rgba(var(--accent-rgb), 0.25);
+            border-radius: var(--radius-lg);
+            padding: 18px 22px;
+            display: none;
+        }
+
+        .details-box h3 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 6px;
+        }
+
+        .details-box p {
+            font-size: 0.92rem;
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        /* --- Results Panel & Stat Grid --- */
+        .results-panel {
+            background-color: rgba(0, 0, 0, 0.45);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            display: none;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .stat-card {
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .stat-card .label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card .value {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-card.highlight {
+            background-color: rgba(var(--accent-rgb), 0.12);
+            border-color: rgba(var(--accent-rgb), 0.3);
+        }
+
+        .stat-card.highlight .value {
+            color: var(--accent);
+        }
+
+        .stat-card.hero {
+            grid-column: 1 / -1;
+            background-color: rgba(var(--accent-rgb), 0.15);
+            border: 1px solid rgba(var(--accent-rgb), 0.4);
+            align-items: center;
+            text-align: center;
+            padding: 18px;
+        }
+
+        .stat-card.hero .label {
+            font-size: 0.8rem;
+            color: var(--accent);
+        }
+
+        .stat-card.hero .value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-top: 2px;
+        }
+
+        .stat-card.hero.guaranteed {
+            background-color: rgba(var(--success-rgb), 0.15);
+            border-color: rgba(var(--success-rgb), 0.4);
+            box-shadow: 0 0 20px var(--success-glow);
+        }
+
+        .stat-card.hero.guaranteed .label {
+            color: var(--success);
+        }
+
+        .stat-card.hero.guaranteed .value {
+            color: #ffffff;
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 20px 12px; }
+            .tool-panel { padding: 20px; }
+            .nav-switcher { flex-direction: column; }
+            .header h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        
+        <header class="header">
+            <div class="brand-badge">Interactive Tool</div>
+            <h1>Mark Calculator</h1>
+            <p>Calculate mark odds and drop time.</p>
+        </header>
+
+        <nav class="nav-switcher">
+            <a href="index.html" class="nav-btn">
+                <span>📚</span> Wiki
+            </a>
+            <a href="law_synth.html" class="nav-btn">
+                <span>⚖️</span> Law Synthesis Calculator
+            </a>
+            <a href="mark_calc.html" class="nav-btn active">
+                <span>🔮</span> Mark Calculator
+            </a>
+        </nav>
+
+        <div class="tool-panel">
+            
+            <!-- Selection Category -->
+            <div>
+                <div class="section-label">1. Choose Mark</div>
+                <div class="grid-2">
+                    <div class="field-card">
+                        <label for="markCategory">Marks</label>
+                        <select id="markCategory" class="select-field" onchange="onCategoryChange()">
+                            <option value="">-- Choose Category --</option>
+                        </select>
+                    </div>
+
+                    <div class="field-card">
+                        <label for="subMarkSelect">Sub mark selection</label>
+                        <select id="subMarkSelect" class="select-field" onchange="onSubMarkChange()" disabled>
+                            <option value="">-- Select Category First --</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Selected Tier Details -->
+            <div id="detailsBox" class="details-box">
+                <h3 id="selectedMarkTitle"></h3>
+                <p id="selectedMarkEffect"></p>
+            </div>
+
+            <!-- Stats Input Fields -->
+            <div>
+                <div class="section-label">2. Input player stats</div>
+                <div class="grid-3">
+                    <div class="field-card">
+                        <label for="markLuck">Mark Luck</label>
+                        <input type="text" id="markLuck" class="input-field" placeholder="1 (Default)" oninput="debouncedInput(this, 'previewLuck')">
+                        <div id="previewLuck" class="parsed-preview"></div>
+                    </div>
+
+                    <div class="field-card">
+                        <label for="markSpeed">Mark Speed</label>
+                        <input type="text" id="markSpeed" class="input-field" placeholder="1 (Default)" oninput="debouncedInput(this, 'previewSpeed')">
+                        <div id="previewSpeed" class="parsed-preview"></div>
+                    </div>
+
+                    <div class="field-card">
+                        <label for="markBulk">Mark Bulk</label>
+                        <input type="text" id="markBulk" class="input-field" placeholder="1 (Default)" oninput="debouncedInput(this, 'previewBulk')">
+                        <div id="previewBulk" class="parsed-preview"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Calculation Display Panel -->
+            <div id="resultsPanel" class="results-panel">
+                <div class="section-label">3. Calculated results</div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="label">Base Rarity</span>
+                        <span id="baseRarityDisplay" class="value">1 / 1</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="label">Applied Luck</span>
+                        <span id="appliedLuckDisplay" class="value">1x</span>
+                    </div>
+                    <div class="stat-card highlight">
+                        <span class="label">Effective Drop Chance</span>
+                        <span id="effectiveChanceDisplay" class="value">1 / 1</span>
+                    </div>
+                    <div class="stat-card highlight">
+                        <span class="label">Marks Per Second</span>
+                        <span id="mpsDisplay" class="value">1/s</span>
+                    </div>
+                    
+                    <div id="heroCard" class="stat-card hero">
+                        <span class="label">Estimated Drop Time</span>
+                        <span id="estTimeDisplay" class="value">Guaranteed (&lt;1s)</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+        const articles = {
+            "secret_marks": {
+                title: "Secret Marks",
+                content: `<ul><li><b>Revenge (Karma) (1/7.5e42)</b> — x2 remnants | x1.5 damage | +2 mark clone</li><li><b>Apotheosis (Quasar) (1/400Qid)</b> — x1.8M qi | x1.8M luck | x20 miasma | x30 ash | x2 manual luck | x6 mark bulk</li><li><b>Deity (Soulfire) (1/1.28Qivg)</b> — x5Oc qi | x5 citizens | x3 faith | x45K karma | x30 laws | x3 damage</li><li><b>Judge (Laws) (1/1.42Spvg)</b> — x50Uvg qi | x5 disciple breakthrough luck | x2 mark bulk</li><li><b>Voidcinder (Ash) (1/514Tg)</b> — x512Notg | x256 vitality | x8 anima | x2 beast cores | x2 materials</li><li><b>Key (Insight) (1/122.73Qatg)</b> — x512Notg qi | x512 disciple breakthrough luck | x1T anima | x15 flora | unlocks flora upgrade tree</li></ul>`
+            },
+            "mark_of_insight": {
+                title: "Mark of Insight",
+                content: `<ul><li><b>Dim (1/1)</b> — x10 luck</li><li><b>Aware (1/10)</b> — x16 Qi | x1.5 luck | x2 insight</li><li><b>Keen (1/50)</b> — x5 luck | x3 insight</li><li><b>Clear (1/600)</b> — x40 Qi | x7 luck | x3 insight | x1.5 Essence</li><li><b>Piercing (1/10K)</b> — x75 Qi | x8 luck | x2.5 Essence</li><li><b>Deepseeing (1/250K)</b> — x150 Qi | x4 insight | x2.5 Soulfire</li><li><b>Farsight (1/100M)</b> — x250 Qi | x14 luck | x4 Essence</li><li><b>Truesight (1/1Qa)</b> — x20 luck | x6 insight | x5 Soulfire | x2 Stars | x2.5 Mark Bulk | x2.25 Mark Speed</li><li><b>Omniscience (1/750DDe)</b> — x500 Qi | x30 luck | x10 insight | x10 Essence | x8 Soulfire | x5 Remnants | x3 Mark Bulk | x3 Mark Speed | x2 Mark Luck</li></ul>`
+            },
+            "mark_of_essence": { 
+                title: "Mark of Essence", 
+                content: `<ul><li><b>Fragment (1/1)</b> — x10 Qi | x55 luck</li><li><b>Shard (1/12)</b> — x115 Essence | x55 Qi | x30 luck</li><li><b>Node (1/60)</b> — x25 luck | x115 Insight</li><li><b>Crest (1/750)</b> — x22 Essence | x12 Qi | x58 luck</li><li><b>Ruby (1/15K)</b> — x42 Essence | x40 luck</li><li><b>Nucleus (1/400k)</b> — x60 Essence | x35 luck | x2.5 Soulfire | x1.75 Mark Speed</li><li><b>Prism (1/150M)</b> — x160 Essence | x80 Qi | x10 Insight | x2.5 Remnants</li><li><b>Eternal (1/2Qa)</b> — x300 Essence | x150 Qi | x25 luck | x6 Soulfire | x2 Star | x2 Mark Bulk | x2 Mark Speed</li><li><b>Sanguine (1/6.22Ocvg)</b> — x1Spvg Qi | x20 Disciple Breakthrough Luck | x150 Citizens | x25 Divinity | x550K Karma</li></ul>` 
+            },
+            "mark_of_soulfire": { 
+                title: "Mark of Soulfire", 
+                content: `<ul><li><b>Mote (1/1)</b> — x10 Qi | x8 Essence | x2 Soulfire</li><li><b>Kindling (1/40)</b> — x11 Luck | x18 Insight | x4 Soulfire</li><li><b>Wraith (1/400)</b> — x8 Qi | x2 Karma</li><li><b>Pyre (1/15K)</b> — x18 Luck | x10 Soulfire | x4 Remnants | x1.5 Mark Speed</li><li><b>Brand (1/80K)</b> — x20 Luck | x35 Qi | x4 Karma</li><li><b>Inferno (1/6M)</b> — x25 Essence | x20 Soulfire | x9 Remnants | x1.75 Mark Bulk</li><li><b>Everflame (1/500B)</b> — x30 Luck | x81 Qi | x40 Essence | x30 Soulfire | x2 Mark Bulk | x1.25 Core Chance</li><li><b>Soulnova (1/2No)</b> — x181 Qi | x61 Soulfire | x2 Remnants | x3 Mark Bulk | x2.5 Mark Speed | x2 Mark Luck</li></ul>` 
+            },
+            "mark_of_karma": { 
+                title: "Mark of Karma", 
+                content: `<ul><li><b>Trace (1/1)</b> — x5 Qi | x5 Karma</li><li><b>Ledger (1/40)</b> — x5 Qi | x4 Karma | x4 Soulfire</li><li><b>Burden (1/400)</b> — x7 Luck | x4 Qi | x4 Karma</li><li><b>Mercy (1/12K)</b> — x10 Luck | x20 Qi | x6 Karma | x2 Remnants</li><li><b>Balance (1/250K)</b> — x15 Luck | x20 Qi | x5 Soulfire | x2 Karma</li><li><b>Reckoning (1/60M)</b> — x13 Luck | x38 Qi | x16 Essence | x2 Karma</li><li><b>Samsara (1/50B)</b> — x125 Luck | x12.5K Qi | x3 Karma | x3 Mark Bulk | x2 Mark Speed</li><li><b>Nirvana (1/2T)</b> — x375 Luck | x12.5K Qi | x13 Karma | x3 Stars | x2 Mark Bulk</li></ul>` 
+            },
+            "mark_of_stars": { 
+                title: "Mark of Stars", 
+                content: `<ul><li><b>Spark (1/1)</b> — x400 Luck | x5 Stars</li><li><b>Stardust (1/25K)</b> — x400 Qi | x12 Stars</li><li><b>Astral (1/400M)</b> — x1K Luck | x1K Qi | x16 Stars | x2 Mark Bulk</li><li><b>Comet (1/50B)</b> — x2K Luck | x1.6K Qi | x20 Stars | x7 Mark Bulk</li><li><b>Radiant (1/40T)</b> — x2K Luck | x2.4K Qi | x2 Nebula</li><li><b>Celestial (1/3.5Qa)</b> — x800 Luck | x800 Qi | x1.5 Nebula</li><li><b>Supernova (1/500Qa)</b> — x1K Luck | x600 Qi | x5 Essence | x15 Nebula | x6 Mark Speed</li><li><b>Genesis (1/25Qi)</b> — x2K Luck | x2K Qi | x6 Nebula | x2 Mark Bulk</li></ul>` 
+            },
+            "mark_of_nebulae": { 
+                title: "Mark of Nebulae", 
+                content: `<ul><li><b>Mistglow (1/1)</b> — x4.6 Nebula | x2K Luck | x3K Karma</li><li><b>Gasveil (1/750)</b> — x5.4 Nebula | x4K Luck | x3K Qi | x5 Mark Speed</li><li><b>Starseed (1/350K)</b> — x4.8K Luck | x12 Stars | x6 Nebula | x2.5K Qi | x2 Mark Bulk</li><li><b>Moonwake (1/15B)</b> — x1.6K Luck | x1.6K Qi | x20 Nebula | x40 Stars | x1.5K Karma | x6 Mark Speed</li><li><b>Cometheart (1/25T)</b> — x2K Luck | x2.4K Qi | x40 Nebula | x8 Mark Bulk</li><li><b>Voidpetal (1/1Qa)</b> — x1K Luck | x1K Qi | x20 Nebula | x20 Stars</li><li><b>Novashard (1/150Sx)</b> — x500 Luck | x300 Qi | x10 Essence | x100 Karma | x5 Nebula | x4 Mark Speed</li><li><b>Astral Crown (1/10Sp)</b> — x1K Luck | x2K Qi | x300 Karma | x20 Nebula | x3 Mark Bulk</li></ul>` 
+            },
+            "mark_of_quasar": { 
+                title: "Mark of Quasar", 
+                content: `<ul><li><b>Flare (1/1)</b> — x300 Quasar | x8K Qi</li><li><b>Vanta (1/6K)</b> — x16 Nebula | x8K Luck | x4K Karma | x132 Quasar</li><li><b>Sear (1/2.8M)</b> — x12K Qi | x48 Stars | x112 Quasar | x3K Karma | x3 Mark Bulk</li><li><b>Halo (1/120B)</b> — x6K Karma | x132 Quasar | x1.5 Mark Luck | x3K Qi</li><li><b>Lumen (1/200T)</b> — x12 Mark Bulk | x6K Qi | x3K Luck | x148 Quasar</li><li><b>Surge (1/8Qa)</b> — x3.2K Qi | x260 Quasar | x3 Remnants</li><li><b>Corona (1/1.2Sp)</b> — x2K Karma | x120 Quasar | x3K Qi | x3K Luck</li><li><b>Zenith (1/2No)</b> — x4 Mark Luck | x240 Quasar | x3 Mark Bulk | x8K Qi</li></ul>` 
+            },
+            "mark_of_miasma": { 
+                title: "Mark of Miasma", 
+                content: `<ul><li><b>Spore (1/1)</b> — x32 Miasma | x18 Mark Speed | x56 Quasar</li><li><b>Seed (1/2B)</b> — x48 Miasma | x8K Breakthrough Luck | x8 Mark Bulk</li><li><b>Rotbrand (1/900B)</b> — x86 Miasma | x128K Qi | x512 Stars | x2 Manual Luck</li><li><b>Vein (1/12Qa)</b> — x144 Miasma | x256K Breakthrough Luck | x2 Damage</li><li><b>Bloom (1/15Qn)</b> — x56 Miasma | x336K Qi | x12 Beast Remnants | x128 Stars | x5 ash | x2 Mark Luck</li><li><b>Wormmoon (1/1Sp)</b> — x72 Miasma | x4.8M Qi | x4.8M Breakthrough Luck</li><li><b>Tombmire (1/800No)</b> — x20 Miasma | x1.6M Breakthrough Luck | x1.2M Qi | x7.5 ash | x3 Mark Speed | x2 Mark Bulk</li><li><b>Abyssplague (1/5Ud)</b> — x32 Miasma | x12M Qi | x12M Breakthrough Luck | x2 Manual Luck</li></ul>` 
+            },
+            "mark_of_ash": { 
+                title: "Mark of Ash", 
+                content: `<ul><li><b>Cinder (1/1)</b> — x12 Ash</li><li><b>Smolder (1/2B)</b> — x16 Miasma | x16 Ash | x1K Quasar</li><li><b>Soot (1/900B)</b> — x48 Ash | x2 Damage</li><li><b>Ember (1/12Qa)</b> — x24 Beast Remnants | x3 Mark Bulk | x3 Mark Speed</li><li><b>Pyre (1/15Qn)</b> — x128 Ash | x9.6M Breakthrough Luck | x9.6M Qi</li><li><b>Ashveil (1/1Sp)</b> — x256 Miasma | x96 Ash | x256 Quasar</li><li><b>Charfall (1/800No)</b> — x7 Damage | x2 Beast Core Chance | x12 Beast Remnants</li><li><b>Hollowflame (1/5Ud)</b> — x256 Ash | x96 Miasma | x128M Breakthrough Luck | x128M Qi</li><li><b>Covenant (1/217.73Qavg)</b> — x50Qivg Qi | x4 Disciple Breakthrough Luck | x5 Citizens | x12 Faith | x8 Laws | x2 Mark Luck</li></ul>` 
+            },
+            "mark_of_law": { 
+                title: "Mark of Law", 
+                content: `<ul><li><b>Edict (1/1)</b> — x7.5 Laws | x2 Mark Bulk</li><li><b>Clause (1/100B)</b> — x12 Laws | x5 Mark Bulk</li><li><b>Verdict (1/100T)</b> — x512M Qi | x1B Essence | x1B Insight | x12 Laws</li><li><b>Tribunal (1/5Qi)</b> — x7.5 Laws | x2 Manual Luck | x2.5 Mark Luck | x3 Mark Speed</li><li><b>Mandate (1/20Sx)</b> — x1B Soulfire | x1B Karma | x16 Laws</li><li><b>Decree (1/5Oc)</b> — x1B Stars | x1B Nebula | x8 Laws | x4 Mark Bulk | x32 Mark Speed</li><li><b>Statute (1/1Ud)</b> — x5B Qi | x4M Luck | x24 Laws | x10 faith</li><li><b>Absolute (1/100Td)</b> — x1B Quasar | x36 Laws | x8 Mark Bulk | x2 Mark Luck | x8 Mark Speed</li></ul>` 
+            },
+            "mark_of_faith": { 
+                title: "Mark of Faith", 
+                content: `<ul><li><b>Prayer (1/1)</b> — x4 Citizens | x6 Faith</li><li><b>Vow (1/24T)</b> — x50Uvg Qi | x12 Faith</li><li><b>Hymn (1/240Qa)</b> — x2 Disciple Breakthrough Luck | x18 Citizens | x24 Faith</li><li><b>Shrine (1/2.4Sx)</b> — x20Dvg Qi | x40 Citizens | x55 Faith</li><li><b>Zeal (1/24Sp)</b> — x6 Disciple Breakthrough Luck | x90 Faith | x3 Mark Speed</li><li><b>Miracle (2.4No)</b> — x160 Citizens | x220 Faith | x12 Laws</li><li><b>Saint (1/240Ud)</b> — x80Qavg Qi | x24 Disciple Breakthrough luck | x5 divinity | x500 Faith</li><li><b>Providence (1/240Qad)</b> — x50Qivg Qi | x80 Disciple Breakthrough Luck | 1.2K Citizens | x2.5K Faith | x10 divinity</li></ul>` 
+            },
+            "mark_of_divinity": { 
+                title: "Mark of Divinity", 
+                content: `<ul><li><b>Sanctum (1/1)</b> — x9 citizens | x13.5 divinity</li><li><b>Seraph (1/1No)</b> — x112.5Uvg qi | x27 divinity</li><li><b>Numen (1/10Dd)</b> — x4.5 disciple luck | x40.5 citizens | x54 divinity</li><li><b>Aureole (1/10Sxd)</b> — x45Dvg qi | x90 citizens | x123.75 divinity</li><li><b>Elysium (1/10Vg)</b> — x13.5 disciple luck | x202.5 divinity | x6.75 mark speed</li><li><b>Emperyan (1/10Qivg)</b> — x360 citizens | x495 divinity | x27 laws</li><li><b>Theurgy (1/10Ocvg)</b> — x180 Qavg qi | x54 disciple luck | x1.12K divinity</li><li><b>Benediction (1/100Tg)</b> — x112.5Qivg qi | x180 disciple luck | x2.7K citizens | x5.62K divinity</li></ul>` 
+            },
+            "mark_of_vitality": { 
+                title: "Mark of Vitality", 
+                content: `<ul><li><b>Lifespark (1/1)</b> — x4.5Qi qi | x13.5 vitality</li><li><b>Heartroot (1/15.42Sp)</b> — x27 vitality | x4.5 anima</li><li><b>Marrowleaf (1/154.22Dc)</b> — x2.25UD qi | x6.75 disciple luck</li><li><b>Pulsebloom (1/1.23Qad)</b> — x72 vitality | x4.5 mark speed</li><li><b>Animabark (1/12.34Spd)</b> — x108 vitality | x11.25 anima</li><li><b>Spiritvein (1/82.25Vg)</b> — x2.25Tvg qi | x27 disciple luck | x4.5 mark bulk</li><li><b>Verdantheart (1/411Tvg)</b> — x216 vitality | x13.5 Anima | x4.5 mark luck</li><li><b>Worldseed (1/2.47Spvg)</b> — x225Tg qi | x72 disciple luck | x576 vitality | x18 anima</li></ul>` 
+            },
+            "mark_of_anima": { 
+                title: "Mark of Anima", 
+                content: `<ul><li><b>Breathwisp (1/1)</b> — x2.25No qi | x18 vitality</li><li><b>Soulthread (1/10Sp)</b> — x36 vitality | x4.5 anima</li><li><b>Karmic trace (1/100Dc)</b> — x2.25Nod qi | x6.75 anima | x6.75M karma</li><li><b>Auralumen (1/1Qad)</b> — x6.75 citizens | x72 vitality | x9 anima</li><li><b>Animaflow (1/10Spd)</b> — x2.25Novg qi | x13.5 anima | x18M karma</li><li><b>Spiritcore (1/100Vg)</b> — x144 vitality | x18 anima</li><li><b>Florasoul (1/1Qavg)</b> — x13.5 citizens | x6.75 divinity | x27 anima | x4.5 flora | x54M karma</li><li><b>Worldbreath (1/10Spvg)</b> — x2.25 Notg qi | x288 vitality | x36 anima | x9 flora | x144M karma</li></ul>` 
+            },
+            "mark_of_flora": { 
+                title: "Mark of Flora", 
+                content: `<ul><li><b>Seedling (1/1)</b> — x18 vitality | x9 flora</li><li><b>Rootwisp (1/100Dc)</b> — x45 vitality | x27 anima</li><li><b>Petalflare (1/1Qad)</b> — x2.25Novg qi | x22.5 flora</li><li><b>Thornpulse (1/10Spd)</b> — x11.25 disciple luck | x90 vitality</li><li><b>Bloomheart (1/100Vg)</b> — x40.5 anima | x40.5 flora</li><li><b>Lifebough (1/1Qavg)</b> — x2.25Notg qi | x22.5 disciple luck | x180 vitality</li><li><b>Verdantsoul (1/10Spvg)</b> — x2.25Qaqag qi | x72 anima | x90 flora</li><li><b>Worldflora (1/100Tg)</b> — 2.25Noqag qi | x54 disciple luck | x432 vitality | x144 anima | x216 flora</li></ul>` 
+            },
+            "mark_of_tian": { 
+                title: "Mark of Tian", 
+                content: `<ul><li><b>Spiri (1/1)</b> — x2.25No qi | x9 divinity | x9 tian</li><li><b>Astral (1/200Dc)</b> — x18 citizens | x18 divinity | x18 tian</li><li><b>Divine (1/2Qad)</b> — x2.25Nod qi | x11.25 disciple luck | x27 tian</li><li><b>Sacred (1/20Spd)</b> — x45 divinity | x22.5 laws | x36 tian</li><li><b>Immortal (1/200Vg)</b> — x45 vitality | x22.5 anima | x54 tian</li><li><b>Heavenly (1/2Qavg)</b> — x2.25Novg qi | x22.5 disciple luck | x22.5 flora | x72 tian</li><li><b>Primordial (1/20Spvg)</b> — x2.25Notg qi | x112.5 citizens | x112.5 divinity | x108 tian</li><li><b>Dao (1/200Tg)</b> — x2.25Noqag qi | x225 divinity | x225 vitality | x112.5 anima | x112.5 flora | x216 tian</li></ul>` 
+            },
+            "mark_of_souls": { 
+                title: "Mark of Souls", 
+                content: `<ul><li><b>Wisp (1/1)</b> — x11.25 souls</li><li><b>Shade (1/1K)</b> — x18 souls</li><li><b>Wraith (1/1M)</b> — x27 souls</li><li><b>Revenant (1/1B)</b> — x45 souls</li><li><b>Seraph (1/1T)</b> — x78.75 souls</li><li><b>Empyrean (1/1Qa)</b> — x135 souls</li></ul>` 
+            },
+            "dao_path": {
+                title: "Dao Path",
+                content: `<ul><li><b>Creative (1/1)</b> — x2 insight | x2 essence | x2 soulfire | x5 dao | x1.5 meridian luck | x2 karma</li><li><b>Joyous (1/250)</b> — 7.5 dao | x1.5 dao generation | x1.5 meridian luck | x3 stars | x3 nebulae | x3 quasar</li><li><b>Radiance (1/500)</b> — x10 dao | x1.5 meridian luck | x4 miasma | x4 ash | x4 laws | x1.5 dao path luck</li><li><b>Snake (1/2.5K)</b> — x5 faith | x5 divinity | x15 dao | x1.5 dao path bulk</li><li><b>Gentle (1/7.5K)</b> — x7 vitality | x7 anima | x7 flora | x20 dao | x1.5 dao path speed</li><li><b>Abyssal (1/20K)</b> — x9 tian | x9 souls | x30 dao | x2 material drops</li><li><b>Bound (1/50K)</b> — x50 dao | x2 dao path bulk | x2 dao path luck</li><li><b>Receptive (1/200K)</b> — x100 dao | x2 dao path bulk | x2 dao path luck | x2 dao path speed</li></ul>`
+            }
+        };
+
+        const SUFFIX_MAP = {
+    // Basic Numbers
+    'k': 3, 'm': 6, 'b': 9, 't': 12, 'qa': 15, 'qn': 15, 'qi': 18, 'sx': 21, 'sp': 24, 'oc': 27, 'no': 30,
+
+    // Decillion Series (1e33 - 1e60)
+    'dc': 33,
+    'ud': 36, 'udc': 36,
+    'dd': 39, 'ddc': 39, 'dde': 39, 'dve': 39,
+    'td': 42, 'tdc': 42,
+    'qad': 45, 'qadc': 45,
+    'qid': 48, 'qidc': 48,
+    'sxd': 51, 'sxdc': 51,
+    'spd': 54, 'spdc': 54,
+    'ocd': 57, 'ocdc': 57,
+    'nod': 60, 'nodc': 60,
+
+    // Vigintillion Series (1e63 - 1e90)
+    'vg': 63, 'uvg': 66, 'dvg': 69, 'tvg': 72, 'qavg': 75, 'qivg': 78, 'sxvg': 81, 'spvg': 84, 'ocvg': 87, 'novg': 90,
+
+    // Trigintillion Series (1e93 - 1e120)
+    'tg': 93, 'utg': 96, 'dtg': 99, 'ttg': 102, 'qatg': 105, 'qitg': 108, 'sxtg': 111, 'sptg': 114, 'octg': 117, 'ntg': 120, 'notg': 120,
+
+    // Quadragintillion Series (1e123 - 1e150)
+    'qag': 123, 'uqag': 126, 'dqag': 129, 'tqag': 132, 'qaqag': 135, 'qiqag': 138, 'sxqag': 141, 'spqag': 144, 'ocqag': 147, 'noqag': 150,
+
+    // Quinquagintillion Series (1e153 - 1e180)
+    'qig': 153, 'uqig': 156, 'dqig': 159, 'tqig': 162, 'qaqig': 165, 'qiqig': 168, 'sxqig': 171, 'spqig': 174, 'ocqig': 177, 'noqig': 180,
+
+    // Sexagintillion Series (1e183 - 1e210)
+    'sg': 183, 'usg': 186, 'dsg': 189, 'tsg': 192, 'qasg': 195, 'qisg': 198, 'sxsg': 201, 'spsg': 204, 'ocsg': 207, 'nosg': 210,
+
+    // Septuagintillion Series (1e213 - 1e240)
+    'st': 213, 'ut': 216, 'dst': 219, 'tst': 222, 'qast': 225, 'qist': 228, 'sxst': 231, 'spst': 234, 'ocst': 237, 'nost': 240,
+
+    // Octogintillion Series (1e243 - 1e270)
+    'og': 243, 'uog': 246, 'dog': 249, 'tog': 252, 'qaog': 255, 'qiog': 258, 'sxog': 261, 'spog': 264, 'ocog': 267, 'noog': 270,
+
+    // Nonagintillion Series (1e273 - 1e300)
+    'ng': 273, 'ung': 276, 'dng': 279, 'tng': 282, 'qang': 285, 'qing': 288, 'sxng': 291, 'spng': 294, 'ocng': 297, 'nong': 300,
+
+    // Centillion
+    'cent': 303
+};
+
+// Sort suffixes by exponent descending; if equal exponent, prioritize longer string keys
+const SUFFIX_LIST = Object.entries(SUFFIX_MAP)
+    .map(([symbol, exp]) => ({ symbol, exp }))
+    .sort((a, b) => b.exp !== a.exp ? b.exp - a.exp : b.symbol.length - a.symbol.length);
+
+        let parsedSubMarks = {};
+        let currentBaseRarityVal = null;
+        let currentRarityRawStr = '';
+        let inputTimeout = null;
+
+        function initCategoryDropdown() {
+            const catSelect = document.getElementById('markCategory');
+            for (const [key, article] of Object.entries(articles)) {
+                const opt = document.createElement('option');
+                opt.value = key;
+                opt.textContent = article.title;
+                catSelect.appendChild(opt);
+            }
+        }
+
+        function parseArticleSubMarks(key) {
+            const article = articles[key];
+            if (!article) return [];
+
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = article.content;
+            const items = tempDiv.querySelectorAll('li');
+
+            const subMarks = [];
+            items.forEach(li => {
+                const text = li.innerText;
+                const parts = text.split('—');
+                if (parts.length >= 2) {
+                    subMarks.push({ name: parts[0].trim(), effect: parts.slice(1).join('—').trim() });
+                } else {
+                    subMarks.push({ name: text.trim(), effect: '' });
+                }
+            });
+
+            return subMarks;
+        }
+
+        function extractRarityFromTitle(titleText) {
+            const match = titleText.match(/\(1\/([^\)]+)\)/i);
+            if (match) {
+                const rawDenomStr = match[1].trim();
+                const parsedNum = parseFormattedNumberToFloat(rawDenomStr);
+                return { rawStr: `1 / ${rawDenomStr}`, value: parsedNum };
+            }
+            return { rawStr: '1 / 1', value: 1 };
+        }
+
+        function onCategoryChange() {
+            const categoryKey = document.getElementById('markCategory').value;
+            const subSelect = document.getElementById('subMarkSelect');
+            const detailsBox = document.getElementById('detailsBox');
+            const resultsPanel = document.getElementById('resultsPanel');
+
+            subSelect.innerHTML = '';
+            detailsBox.style.display = 'none';
+            resultsPanel.style.display = 'none';
+            currentBaseRarityVal = null;
+
+            if (!categoryKey) {
+                subSelect.disabled = true;
+                subSelect.innerHTML = '<option value="">-- Select Category First --</option>';
+                return;
+            }
+
+            const subMarks = parseArticleSubMarks(categoryKey);
+            parsedSubMarks[categoryKey] = subMarks;
+
+            subSelect.disabled = false;
+            subSelect.innerHTML = '<option value="">-- Choose Tier --</option>';
+
+            subMarks.forEach((item, idx) => {
+                const opt = document.createElement('option');
+                opt.value = idx;
+                opt.textContent = item.name;
+                subSelect.appendChild(opt);
+            });
+        }
+
+        function onSubMarkChange() {
+            const categoryKey = document.getElementById('markCategory').value;
+            const subIdx = document.getElementById('subMarkSelect').value;
+            const detailsBox = document.getElementById('detailsBox');
+            const resultsPanel = document.getElementById('resultsPanel');
+
+            if (subIdx === '' || !categoryKey) {
+                detailsBox.style.display = 'none';
+                resultsPanel.style.display = 'none';
+                currentBaseRarityVal = null;
+                return;
+            }
+
+            const subMark = parsedSubMarks[categoryKey][subIdx];
+            if (subMark) {
+                document.getElementById('selectedMarkTitle').textContent = subMark.name;
+                document.getElementById('selectedMarkEffect').textContent = subMark.effect ? `Effects: ${subMark.effect}` : '';
+                detailsBox.style.display = 'block';
+
+                const rarityData = extractRarityFromTitle(subMark.name);
+                currentBaseRarityVal = rarityData.value;
+                currentRarityRawStr = rarityData.rawStr;
+
+                resultsPanel.style.display = 'block';
+                updateChanceCalculation();
+            }
+        }
+
+        function formatTimeSeconds(totalSeconds) {
+            if (!isFinite(totalSeconds) || isNaN(totalSeconds) || totalSeconds <= 0) return 'Guaranteed (<1s)';
+            
+            if (totalSeconds < 60) {
+                return `${totalSeconds.toFixed(2)}s`;
+            }
+            
+            const days = Math.floor(totalSeconds / 86400);
+            const hours = Math.floor((totalSeconds % 86400) / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = Math.floor(totalSeconds % 60);
+
+            const parts = [];
+            if (days > 0) parts.push(`${days}d`);
+            if (hours > 0) parts.push(`${hours}h`);
+            if (minutes > 0) parts.push(`${minutes}m`);
+            if (seconds > 0 || parts.length === 0) parts.push(`${seconds}s`);
+
+            return parts.join(' ');
+        }
+
+        function updateChanceCalculation() {
+            if (currentBaseRarityVal === null) return;
+
+            const luckInput = document.getElementById('markLuck').value;
+            let luckVal = parseFormattedNumberToFloat(luckInput);
+            if (luckVal === null || luckVal <= 0) luckVal = 1;
+
+            const speedInput = document.getElementById('markSpeed').value;
+            let speedVal = parseFormattedNumberToFloat(speedInput);
+            if (speedVal === null || speedVal <= 0) speedVal = 1;
+
+            const bulkInput = document.getElementById('markBulk').value;
+            let bulkVal = parseFormattedNumberToFloat(bulkInput);
+            if (bulkVal === null || bulkVal <= 0) bulkVal = 1;
+
+            document.getElementById('baseRarityDisplay').textContent = currentRarityRawStr;
+            document.getElementById('appliedLuckDisplay').textContent = `${formatDisplayNumber(luckVal)}x`;
+
+            const effectiveDenominator = currentBaseRarityVal / luckVal;
+
+            if (luckVal >= currentBaseRarityVal || effectiveDenominator <= 1) {
+                document.getElementById('effectiveChanceDisplay').textContent = '1 / 1 (Guaranteed)';
+            } else {
+                const formattedDenom = formatDisplayNumber(effectiveDenominator);
+                document.getElementById('effectiveChanceDisplay').textContent = `1 / ${formattedDenom}`;
+            }
+
+            const marksPerSecond = speedVal * bulkVal;
+            document.getElementById('mpsDisplay').textContent = `${formatDisplayNumber(marksPerSecond)}/s`;
+
+            const heroCard = document.getElementById('heroCard');
+            const estTimeDisplay = document.getElementById('estTimeDisplay');
+
+            if (effectiveDenominator <= 1 || marksPerSecond >= effectiveDenominator) {
+                estTimeDisplay.textContent = 'Guaranteed (<1s)';
+                heroCard.classList.add('guaranteed');
+            } else {
+                const estimatedSeconds = effectiveDenominator / marksPerSecond;
+                estTimeDisplay.textContent = formatTimeSeconds(estimatedSeconds);
+                heroCard.classList.remove('guaranteed');
+            }
+        }
+
+        function parseFormattedNumberToFloat(input) {
+            if (!input) return null;
+            let str = input.toString().trim().toLowerCase().replace(/,/g, '');
+
+            if (/^-?\d+(\.\d+)?e[+-]?\d+$/.test(str)) {
+                return parseFloat(str);
+            }
+
+            const match = str.match(/^(-?\d+(?:\.\d+)?)\s*([a-z]+)$/);
+            if (match) {
+                const num = parseFloat(match[1]);
+                const suffix = match[2];
+
+                if (isNaN(num)) return null;
+
+                if (SUFFIX_MAP[suffix] !== undefined) {
+                    const exponent = SUFFIX_MAP[suffix];
+                    return num * Math.pow(10, exponent);
+                }
+            }
+
+            const pureNum = Number(str);
+            if (!isNaN(pureNum)) {
+                return pureNum;
+            }
+
+            return null;
+        }
+
+        function parseFormattedNumber(input) {
+            if (!input) return null;
+            let str = input.trim().toLowerCase().replace(/,/g, '');
+
+            if (/^-?\d+(\.\d+)?e[+-]?\d+$/.test(str)) {
+                return str;
+            }
+
+            const match = str.match(/^(-?\d+(?:\.\d+)?)\s*([a-z]+)$/);
+            if (match) {
+                const num = parseFloat(match[1]);
+                const suffix = match[2];
+
+                if (isNaN(num)) return null;
+
+                if (SUFFIX_MAP[suffix] !== undefined) {
+                    const exponent = SUFFIX_MAP[suffix];
+                    const val = num * Math.pow(10, exponent % 1);
+                    const expSum = Math.floor(exponent);
+                    return `${val}e${expSum}`;
+                }
+            }
+
+            const pureNum = Number(str);
+            if (!isNaN(pureNum)) {
+                return pureNum;
+            }
+
+            return null;
+        }
+
+        function formatDisplayNumber(parsed) {
+            if (parsed === null) return 'Invalid Input';
+
+            let num = typeof parsed === 'string' ? parseFloat(parsed) : parsed;
+            if (isNaN(num)) return 'Invalid Input';
+
+            const absNum = Math.abs(num);
+
+            if (absNum < 1000) {
+                return absNum < 1e-4 && absNum > 0 ? num.toExponential(4) : num.toLocaleString('en-US', { maximumFractionDigits: 4 });
+            }
+
+            const log10 = Math.floor(Math.log10(absNum));
+
+            for (const item of SUFFIX_LIST) {
+                if (log10 >= item.exp) {
+                    const scaled = num / Math.pow(10, item.exp);
+                    return `${scaled.toFixed(4).replace(/\.?0+$/, '')}${item.symbol}`;
+                }
+            }
+
+            return num.toExponential(4);
+        }
+
+        function debouncedInput(inputElem, previewId) {
+            if (inputTimeout) window.cancelAnimationFrame(inputTimeout);
+            inputTimeout = window.requestAnimationFrame(() => {
+                handleStatInput(inputElem, previewId);
+            });
+        }
+
+        function handleStatInput(inputElem, previewId) {
+            const parsedValue = parseFormattedNumber(inputElem.value);
+            const previewElem = document.getElementById(previewId);
+
+            if (inputElem.value.trim() === '') {
+                previewElem.textContent = '';
+                previewElem.classList.remove('error');
+            } else {
+                const formatted = formatDisplayNumber(parsedValue);
+                previewElem.textContent = formatted;
+
+                if (formatted === 'Invalid Input') {
+                    previewElem.classList.add('error');
+                } else {
+                    previewElem.classList.remove('error');
+                }
+            }
+            updateChanceCalculation();
+        }
+
+        window.addEventListener('DOMContentLoaded', initCategoryDropdown);
+    </script>
+
+</body>
+</html>

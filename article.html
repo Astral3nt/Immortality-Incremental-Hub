@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wiki Article - Immortality Incremental</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #090a0f;
+            --bg-secondary: #10121a;
+            --card-bg: #141722;
+            --card-bg-hover: #1b1f2e;
+            --card-border: rgba(255, 255, 255, 0.08);
+            
+            /* Dynamic Accent Color Theme */
+            --accent: #06b6d4;               /* Electric Cyan */
+            --accent-rgb: 6, 182, 212;
+            --accent-glow: rgba(var(--accent-rgb), 0.25);
+            --accent-hover: #0891b2;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            
+            --radius-xl: 16px;
+            --radius-lg: 10px;
+            --radius-md: 6px;
+            --shadow-subtle: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 50% 0%, rgba(var(--accent-rgb), 0.12) 0%, transparent 60%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 450px;
+            height: auto;
+            object-fit: contain;
+            border-radius: 6px;
+            border: 1px solid #374151;
+            }
+
+        .top-bar {
+            width: 100%;
+            max-width: 860px;
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background-color: var(--card-bg);
+            color: var(--accent);
+            text-decoration: none;
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: transform 0.15s ease, border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+            box-shadow: var(--shadow-subtle);
+            will-change: transform;
+        }
+
+        .back-btn:hover {
+            background-color: var(--card-bg-hover);
+            border-color: var(--accent);
+            color: #ffffff;
+            transform: translateX(-4px);
+        }
+
+        .article-container {
+            width: 100%;
+            max-width: 860px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-xl);
+            padding: 40px 44px;
+            box-shadow: var(--shadow-subtle);
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.2s ease;
+        }
+
+        .article-container:hover {
+            border-color: rgba(var(--accent-rgb), 0.3);
+        }
+
+        /* Top Accent Line */
+        .article-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+        }
+
+        /* Solid Colored Article Title */
+        h1#article-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 16px;
+            color: var(--accent) !important;
+        }
+
+        /* Content Styling */
+        .content {
+            color: var(--text-main);
+            font-size: 0.98rem;
+            line-height: 1.75;
+        }
+
+        .content h2 {
+            font-size: 1.4rem;
+            color: #ffffff;
+            margin: 32px 0 14px 0;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .content h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 1.1em;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .content h3 {
+            font-size: 1.15rem;
+            color: var(--accent);
+            margin: 24px 0 10px 0;
+            font-weight: 600;
+        }
+
+        .content p {
+            margin-bottom: 16px;
+            color: #e2e8f0;
+        }
+
+        .content ul, .content ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .content li {
+            margin-bottom: 8px;
+            padding-left: 4px;
+        }
+
+        .content blockquote {
+            border-left: 3px solid var(--accent);
+            background: rgba(0, 0, 0, 0.25);
+            padding: 14px 18px;
+            margin: 20px 0;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .content code {
+            background-color: rgba(0, 0, 0, 0.4);
+            color: var(--accent);
+            padding: 3px 8px;
+            border-radius: var(--radius-md);
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.88em;
+            border: 1px solid var(--card-border);
+        }
+
+        .content pre {
+            background-color: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--card-border);
+            padding: 16px;
+            border-radius: var(--radius-lg);
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+
+        .content pre code {
+            background: none;
+            border: none;
+            padding: 0;
+            color: var(--text-main);
+        }
+
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+        }
+
+        .content th, .content td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .content th {
+            background: rgba(var(--accent-rgb), 0.1);
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .content tr:last-child td {
+            border-bottom: none;
+        }
+
+        .error-message {
+            color: var(--accent-red);
+            font-weight: 600;
+            padding: 16px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: var(--radius-lg);
+        }
+
+        @media (max-width: 600px) {
+            .article-container {
+                padding: 24px 20px;
+            }
+
+            h1#article-title {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <a href="index.html" class="back-btn">← Back to main page</a>
+    </div>
+
+    <main class="article-container">
+        <h1 id="article-title">Loading...</h1>
+        <div id="article-content" class="content">
+            Loading page text...
+        </div>
+    </main>
+
+    <script src="articles.js"></script>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const pageKey = urlParams.get('page');
+
+        const titleElem = document.getElementById('article-title');
+        const contentElem = document.getElementById('article-content');
+
+        if (typeof articles !== 'undefined' && pageKey && articles[pageKey]) {
+            titleElem.innerHTML = articles[pageKey].title;
+            contentElem.innerHTML = articles[pageKey].content;
+            document.title = articles[pageKey].title + " - Immortality Incremental Wiki";
+        } else {
+            titleElem.innerHTML = "Page Not Found";
+            titleElem.style.color = "var(--accent-red)";
+            contentElem.innerHTML = "<div class='error-message'>The requested page doesn't exist or <b>articles.js</b> failed to load.</div>";
+        }
+    </script>
+</body>
+</html>
