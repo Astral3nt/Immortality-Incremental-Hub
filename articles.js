@@ -24,7 +24,6 @@ const articles = {
                 <li><b>CATACOMBS</b> — 15 Jade, 5 Ore Potions</li>
                 <li><b>HARDTRAINING</b> — 10 Tickets, 20 Jade, 5 of each Mark Potion</li>
                 <li><b>WORLD8PT2</b> — 5 Tickets, 1 of each Path Potion</li>
-                <li><b>DUNGEON6</b> — 5 Tickets, 10 Jade, 1 Ore Potion</li>
                 <li><b>MINING</b> — 1 of each Path Potion, 10 Tickets</li>
                 <li><b>WORLD9PT1</b> — 1 Ore Potion, 10 Jade</li>
             </ul>
