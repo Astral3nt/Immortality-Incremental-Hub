@@ -2250,51 +2250,51 @@ const articles = {
             
             <ul style="list-style-type: none; padding-left: 0;">
                 <li style="margin-bottom: 20px;">
-                    <strong style="color: #c4b5fd;">Hunter - w1 | 10Ocd stars | x2 remnants , x2 damage , +1 beast core drop.</strong>[cite: 1, 14]
+                    <strong style="color: #c4b5fd;">Hunter - w1 | 10Ocd stars | x2 remnants , x2 damage , +1 beast core drop.</strong>
                     <div style="margin-top: 8px;">
-                        <img src="images/hunter.png" alt="Hunter Mark Location" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                        <img src="images/hunter.png" alt="Hunter Mark Location" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
                 </li>
 
                 <li style="margin-bottom: 20px;">
-                    <strong style="color: #c4b5fd;">Hidden power - w2 | 200Qivg insight | x126M qi , x16M luck.</strong>[cite: 2, 13]
+                    <strong style="color: #c4b5fd;">Hidden power - w2 | 200Qivg insight | x126M qi , x16M luck.</strong>
                     <div style="margin-top: 8px;">
-                        <img src="images/hidden_power.png" alt="Hidden Power Mark Location" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 13]
+                        <img src="images/hidden_power.png" alt="Hidden Power Mark Location" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
                 </li>
 
                 <li style="margin-bottom: 20px;">
-                    <strong style="color: #c4b5fd;">Volcanic terror - w3 | 3Ud ash | x3 ash , x2 karma , x2 mark bulk , x5 mark speed.</strong>[cite: 3, 17]
+                    <strong style="color: #c4b5fd;">Volcanic terror - w3 | 3Ud ash | x3 ash , x2 karma , x2 mark bulk , x5 mark speed.</strong>
                     <div style="margin-top: 8px;">
-                        <img src="images/volcanic_terror.png" alt="Volcanic Terror Mark Location" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 17]
+                        <img src="images/volcanic_terror.png" alt="Volcanic Terror Mark Location" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
                 </li>
 
                 <li style="margin-bottom: 20px;">
-                    <strong style="color: #c4b5fd;">Heavenly master - w4 | 50Qi faith | x100 laws , x3 citizens , x5 faith, x15 mark speed.</strong>[cite: 4, 11]
+                    <strong style="color: #c4b5fd;">Heavenly master - w4 | 50Qi faith | x100 laws , x3 citizens , x5 faith, x15 mark speed.</strong>
                     <div style="margin-top: 8px;">
-                        <img src="images/heavenly_master.png" alt="Heavenly Master Mark Location" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 11]
+                        <img src="images/heavenly_master.png" alt="Heavenly Master Mark Location" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;"
                     </div>
                 </li>
 
                 <li style="margin-bottom: 20px;">
-                    <strong style="color: #c4b5fd;">Hegemony - w1 | 10Qa divinity | 2x stats.</strong>[cite: 5, 12]
+                    <strong style="color: #c4b5fd;">Hegemony - w1 | 10Qa divinity | 2x stats.</strong>
                     <div style="margin-top: 8px;">
-                        <img src="images/hegemony.png" alt="Hegemony Mark Location" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 12]
+                        <img src="images/hegemony.png" alt="Hegemony Mark Location" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
                 </li>
 
                 <li style="margin-bottom: 20px;">
-                    <strong style="color: #c4b5fd;">Parallel world - w5 | 1.5Qisg laws | x2 material chance , +5 world tiers , unlocks divinity board 3.</strong>[cite: 6, 15]
+                    <strong style="color: #c4b5fd;">Parallel world - w5 | 1.5Qisg laws | x2 material chance , +5 world tiers , unlocks divinity board 3.</strong>
                     <div style="margin-top: 8px;">
-                        <img src="images/parallel_world.png" alt="Parallel World Mark Location" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 15]
+                        <img src="images/parallel_world.png" alt="Parallel World Mark Location" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;"
                     </div>
                 </li>
 
                 <li style="margin-bottom: 20px;">
-                    <strong style="color: #c4b5fd;">Resolution - w8 | 10Dc endurance | 10x endurance, x2 path speed ,2x path bulk. 2x path luck</strong>[cite: 7, 16]
+                    <strong style="color: #c4b5fd;">Resolution - w8 | 10Dc endurance | 10x endurance, x2 path speed ,2x path bulk. 2x path luck</strong>
                     <div style="margin-top: 8px;">
-                        <img src="images/resolution.png" alt="Resolution Mark Location" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 16]
+                        <img src="images/resolution.png" alt="Resolution Mark Location" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
                 </li>
             </ul>
@@ -2509,75 +2509,75 @@ const articles = {
     title: "Time Milestone",
     content: `
             <div style="margin-top: 8px;">
-                        <img src="images/time_milestone.png" alt="time" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                        <img src="images/time_milestone.png" alt="time" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
     `},
 "world1_mark_opener": {
     title: "Mark Opener Milestone",
     content: `
             <div style="margin-top: 8px;">
-                        <img src="images/mark_milestone.png" alt="mark" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                        <img src="images/mark_milestone.png" alt="mark" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
     `},
 "world1_temperings": {
     title: "Body Temperings",
     content: `
             <div style="margin-top: 8px;">
-                        <img src="images/body1.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                        <img src="images/body1.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
             <div style="margin-top: 8px;">
-                        <img src="images/body2.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                        <img src="images/body2.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
             <div style="margin-top: 8px;">
-                        <img src="images/body3.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                        <img src="images/body3.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;"
                     </div>
             <div style="margin-top: 8px;">
-                        <img src="images/body4.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                        <img src="images/body4.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
             <div style="margin-top: 8px;">
-                        <img src="images/body5.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                        <img src="images/body5.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
             <div style="margin-top: 8px;">
-                        <img src="images/body6.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                        <img src="images/body6.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
             <div style="margin-top: 8px;">
-                        <img src="images/body7.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                        <img src="images/body7.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
             <div style="margin-top: 8px;">
-                        <img src="images/body8.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                        <img src="images/body8.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;"
                     </div>
             <div style="margin-top: 8px;">
-                        <img src="images/body9.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                        <img src="images/body9.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
             <div style="margin-top: 8px;">
-                        <img src="images/body10.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                        <img src="images/body10.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
             <div style="margin-top: 8px;">
-                        <img src="images/body11.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                        <img src="images/body11.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
             <div style="margin-top: 8px;">
-                        <img src="images/body12.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                        <img src="images/body12.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
             <div style="margin-top: 8px;">
-                        <img src="images/body13.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                        <img src="images/body13.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
             <div style="margin-top: 8px;">
-                        <img src="images/body14.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                        <img src="images/body14.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
             <div style="margin-top: 8px;">
-                        <img src="images/body15.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                        <img src="images/body15.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
             <div style="margin-top: 8px;">
-                        <img src="images/body16.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                        <img src="images/body16.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
             <div style="margin-top: 8px;">
-                        <img src="images/body17.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                        <img src="images/body17.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
             <div style="margin-top: 8px;">
-                        <img src="images/body18.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                        <img src="images/body18.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
             <div style="margin-top: 8px;">
-                        <img src="images/body19.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                        <img src="images/body19.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" 
                     </div>
     `},
 "world1_bloodlines": {
