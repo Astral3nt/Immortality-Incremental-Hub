@@ -2508,23 +2508,77 @@ const articles = {
 "world1_time": {
     title: "Time Milestone",
     content: `
-            soon, for now check <a href="https://trello.com/b/0uCSKao3/immortality-incremental" target="_blank" style="color: #4ea8de; text-decoration: underline;">
-                                        https://trello.com/b/0uCSKao3/immortality-incremental
-                                </a>
+            <div style="margin-top: 8px;">
+                        <img src="images/time_milestone.png" alt="time" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                    </div>
     `},
 "world1_mark_opener": {
     title: "Mark Opener Milestone",
     content: `
-            soon, for now check <a href="https://trello.com/b/0uCSKao3/immortality-incremental" target="_blank" style="color: #4ea8de; text-decoration: underline;">
-                                        https://trello.com/b/0uCSKao3/immortality-incremental
-                                </a>
+            <div style="margin-top: 8px;">
+                        <img src="images/mark_milestone.png" alt="mark" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                    </div>
     `},
 "world1_temperings": {
     title: "Body Temperings",
     content: `
-            soon, for now check <a href="https://trello.com/b/0uCSKao3/immortality-incremental" target="_blank" style="color: #4ea8de; text-decoration: underline;">
-                                        https://trello.com/b/0uCSKao3/immortality-incremental
-                                </a>
+            <div style="margin-top: 8px;">
+                        <img src="images/body1.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                    </div>
+            <div style="margin-top: 8px;">
+                        <img src="images/body2.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                    </div>
+            <div style="margin-top: 8px;">
+                        <img src="images/body3.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                    </div>
+            <div style="margin-top: 8px;">
+                        <img src="images/body4.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                    </div>
+            <div style="margin-top: 8px;">
+                        <img src="images/body5.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                    </div>
+            <div style="margin-top: 8px;">
+                        <img src="images/body6.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                    </div>
+            <div style="margin-top: 8px;">
+                        <img src="images/body7.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                    </div>
+            <div style="margin-top: 8px;">
+                        <img src="images/body8.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                    </div>
+            <div style="margin-top: 8px;">
+                        <img src="images/body9.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                    </div>
+            <div style="margin-top: 8px;">
+                        <img src="images/body10.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                    </div>
+            <div style="margin-top: 8px;">
+                        <img src="images/body11.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                    </div>
+            <div style="margin-top: 8px;">
+                        <img src="images/body12.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                    </div>
+            <div style="margin-top: 8px;">
+                        <img src="images/body13.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                    </div>
+            <div style="margin-top: 8px;">
+                        <img src="images/body14.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                    </div>
+            <div style="margin-top: 8px;">
+                        <img src="images/body15.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                    </div>
+            <div style="margin-top: 8px;">
+                        <img src="images/body16.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                    </div>
+            <div style="margin-top: 8px;">
+                        <img src="images/body17.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                    </div>
+            <div style="margin-top: 8px;">
+                        <img src="images/body18.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                    </div>
+            <div style="margin-top: 8px;">
+                        <img src="images/body19.png" alt="body" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #374151;" />[cite: 14]
+                    </div>
     `},
 "world1_bloodlines": {
     title: "Bloodlines",
