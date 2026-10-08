@@ -53,6 +53,7 @@ const articles = {
     "dao": { title: "Dao", content: `<p>This is w7 currency.</p><p>Unlocked upon entering w7.</p>` },
     "strength": { title: "Strength", content: `<p>This is w8 currency.</p><p>Unlocked upon entering w8 and standing on the button.</p>` },
     "endurance": { title: "Endurance", content: `<p>This is w8 currency.</p><p>Unlocked upon doing endurance reset.</p>` },
+    "coins": { title: "Coins", content: `<p>This is w9 currency.</p><p>Unlocked upon mining.</p>` },
 
     // === GLOBAL MARKS ===
     "mark_of_unity": {
@@ -396,6 +397,38 @@ const articles = {
                 <li><b>Receptive (1/200K)</b> — x100 dao | x2 dao path bulk | x2 dao path luck | x2 dao path speed</li>
             </ul>
         `
+    },
+
+    "strength_path": { 
+    title: "Path Of Strength", 
+    content: `
+        <ul>
+            <li><b>Strain (1/1)</b> — x10 qi | x2.5 strength</li>
+            <li><b>Inertia (1/50)</b> — x10 Dao | x4 remnants | x3 strength</li>
+            <li><b>Tonea (1/750)</b> — x22 qi | x1.25 Path luck | x4 strength | x1.1 strength arts research speed</li>
+            <li><b>Forcia (1/8.5K)</b> — x7 Dao | x1.5 Path speed | x5 strength | x1.1 strength arts research speed</li>
+            <li><b>Vigorana (1/85K)</b> — x100 qi | x15 Dao | x1.5 Path speed | x8 strength | +0 base beast remnants drops</li>
+            <li><b>Tensionum (1/530K)</b> — x2 material drops | x1.5 Path speed | x1.5 Path luck | x12 strength</li>
+            <li><b>Torqueblasia (1/3.1M)</b> — x1000 qi | x50 disciple luck | x18 dao | x15 strength | x5 endurance | x1.4 strength arts research speed</li>
+            <li><b>Massnovium (1/7.3M)</b> — x2.25 meridian luck | x2.25 path bulk | x1.5 path luck | x2.25 path speed | x25 strength | x15 endurance | x1.7 strength arts research speed</li>
+        </ul>
+    ` 
+    },
+
+    "depths_path": { 
+    title: "Path Of Depths", 
+    content: `
+        <ul>
+            <li><b>Stone (1/1)</b> — x1M qi | x2 strength | x3 coins</li>
+            <li><b>Iron (1/250)</b> — x5 dao | x2 strength | x3 endurance | x5 coins</li>
+            <li><b>Crystal (1/2.5K)</b> — x5B qi | x5M luck | x3 path speed | x10 endurance | x3 coins | x1.5 mining luck</li>
+            <li><b>Obsidian (1/2.5M)</b> — x1T qi | x4 dao | x3 strength | x2 endurance</li>
+            <li><b>Magma (1/250M)</b> — x1Qa qi | x3 path bulk | x2 path luck | x2 coins</li>
+            <li><b>Tectonic (1/50B)</b> — x5K disciple luck | x5 strength | x5 endurance | x5 coins | x1.25 mining luck</li>
+            <li><b>Mantle (1/5T)</b> — x150Qi qi | x1M luck | x5 path bulk</li>
+            <li><b>Gaia (1/1Qa)</b> — x1Sp qi | x1M luck | x100K disciple luck | x2 dao | x3 strength | x5 endurance | x10 coins</li>
+        </ul>
+    ` 
     },
 
     "strength_path": {
