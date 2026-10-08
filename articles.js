@@ -378,6 +378,7 @@ const articles = {
                 <li><b>Judge (Laws)</b> — x50Uvg qi | x5 disciple breakthrough luck | x2 mark bulk</li>
                 <li><b>Voidcinder (Ash)</b> — x512Notg | x256 vitality | x8 anima | x2 beast cores | x2 materials</li>
                 <li><b>Key (Insight)</b> — x512Notg qi | x512 disciple breakthrough luck | x1T anima | x15 flora | unlocks flora upgrade tree (1 max)</li>
+                <li><b>Punch (Strength) (1/25T)</b> — x10 qi | x1.25 path bulk | x1.25 path luck | x1.25 path speed | x50 strength | x42 endurance | x2 strength arts research speed | ^1.1 disciple luck | ^1.2 endurance profieincy gain</li>
             </ul>
         `
     },
@@ -399,7 +400,7 @@ const articles = {
         `
     },
 
-    "strength_path": { 
+    "path_of_strength": { 
     title: "Path Of Strength", 
     content: `
         <ul>
