@@ -26,6 +26,9 @@ const articles = {
                 <li><b>WORLD8PT2</b> — 5 Tickets, 1 of each Path Potion</li>
                 <li><b>MINING</b> — 1 of each Path Potion, 10 Tickets</li>
                 <li><b>WORLD9PT1</b> — 1 Ore Potion, 10 Jade</li>
+                 <li><b>MININGEXPANSION</b> — 10 tickets, 10 jade , 1 of each potions</li>
+                
+                
             </ul>
         `
     },
